@@ -2,6 +2,7 @@
 
 join_num=0;
 leave_num=0;
+item_count=5000;
 
 touch random_count.migration.log
 
@@ -63,7 +64,7 @@ function lcase1(){
    echo "Migration leave count: $leave_num"
    echo "g1 M-$g1_m_port, S-$g1_s_port migration leave"
    echo cluster leave alone | nc localhost $g1_m_port
-   echo "send all migration join command"
+   echo "send all migration leave command"
 }
 
 function lcase2(){
@@ -73,7 +74,7 @@ function lcase2(){
    sleep 3
    echo "g2 M-$g2_m_port, S-$g2_s_port migration leave"
    echo cluster leave end | nc localhost $g2_m_port
-   echo "send all migration join command"
+   echo "send all migration leave command"
 }
 
 function lcase3(){
@@ -85,7 +86,7 @@ function lcase3(){
    echo cluster leave | nc localhost $g2_m_port
    echo "g3 M-$g3_m_port, S-$g3_s_port migration leave"
    echo cluster leave end | nc localhost $g3_m_port
-   echo "send all migration join command"
+   echo "send all migration leave command"
 }
 
 function lcase4(){
@@ -99,7 +100,7 @@ function lcase4(){
    echo cluster leave | nc localhost $g3_m_port
    echo "g4 M-$g4_m_port, S-$g4_s_port migration leave"
    echo cluster leave end | nc localhost $g4_m_port
-   echo "send all migration join command"
+   echo "send all migration leave command"
 }
 
 function g0_stats() {
@@ -134,7 +135,7 @@ num=0;
 echo prepare items..sending set operation to g0 master...
 while [ 1 ]
 do
-   if [ $num -eq 5000 ]
+   if [ $num -eq $item_count ]
    then
       break
    fi
@@ -189,9 +190,9 @@ do
    g4_count=`echo $g4_sub | sed 's/[^0-9]//g'`
 
    sum=`expr $g0_count + $g1_count + $g2_count + $g3_count + $g4_count - 5`;
-   if [ $sum -ne 5000 ]
+   if [ $sum -ne $item_count ]
    then
-      echo ERROR: items count miss, join operation
+      echo ERROR: items count miss, join operation. expected = $item_count, now = $sum
       break
    else
       echo SUCCESS: all node items count is complete.
@@ -227,9 +228,9 @@ do
    g0_count=`echo $g0_sub | sed 's/[^0-9]//g'`
 
    sum=`expr $g0_count - 1`;
-   if [ $sum -ne 5000 ]
+   if [ $sum -ne $item_count ]
    then
-      echo ERROR: items count miss, leave operation
+      echo ERROR: items count miss, leave operation. expected = $item_count, now = $sum
       break
    else
       echo SUCCESS: all node items count is complete.

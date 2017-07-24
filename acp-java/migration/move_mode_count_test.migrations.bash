@@ -4,7 +4,7 @@ join_num=0;
 leave_num=0;
 mode=1;
 mode_str=("global" "random")
-item_count=5000;
+item_count=10000;
 
 touch random_count.migration.log
 
@@ -51,14 +51,16 @@ function jcase3(){
 function jcase4(){
    echo "Migration join count: $join_num"
    echo "g1 M-$g1_m_port, S-$g1_s_port migration join ${mode_str[$mode]}"
-   echo cluster join begin ${mode_str[$mode]} | nc localhost $g1_m_port
-   sleep 3
+   echo cluster join alone ${mode_str[$mode]} | nc localhost $g1_m_port
+   sleep 5
    echo "g2 M-$g2_m_port, S-$g2_s_port migration join"
-   echo cluster join | nc localhost $g2_m_port
+   echo cluster join alone ${mode_str[$mode]} | nc localhost $g2_m_port
+   sleep 5
    echo "g3 M-$g3_m_port, S-$g3_s_port migration join"
-   echo cluster join | nc localhost $g3_m_port
+   echo cluster join alone ${mode_str[$mode]} | nc localhost $g3_m_port
+   sleep 5
    echo "g4 M-$g4_m_port, S-$g4_s_port migration join"
-   echo cluster join end | nc localhost $g4_m_port
+   echo cluster join alone ${mode_str[$mode]}  | nc localhost $g4_m_port
    echo "send all migration join command"
 }
 
@@ -94,14 +96,16 @@ function lcase3(){
 function lcase4(){
    echo "Migration leave count: $leave_num"
    echo "g1 M-$g1_m_port, S-$g1_s_port migration leave ${mode_str[$mode]}"
-   echo cluster leave begin ${mode_str[$mode]} | nc localhost $g1_m_port
-   sleep 3
+   echo cluster leave alone ${mode_str[$mode]} | nc localhost $g1_m_port
+   sleep 5
    echo "g2 M-$g2_m_port, S-$g2_s_port migration leave"
-   echo cluster leave | nc localhost $g2_m_port
+   echo cluster leave alone ${mode_str[$mode]} | nc localhost $g2_m_port
+   sleep 5
    echo "g3 M-$g3_m_port, S-$g3_s_port migration leave"
-   echo cluster leave | nc localhost $g3_m_port
+   echo cluster leave alone ${mode_str[$mode]} | nc localhost $g3_m_port
+   sleep 5
    echo "g4 M-$g4_m_port, S-$g4_s_port migration leave"
-   echo cluster leave end | nc localhost $g4_m_port
+   echo cluster leave alone ${mode_str[$mode]} | nc localhost $g4_m_port
    echo "send all migration leave command"
 }
 
