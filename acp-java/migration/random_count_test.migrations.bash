@@ -2,7 +2,7 @@
 
 join_num=0;
 leave_num=0;
-item_count=5000;
+item_count=50000;
 
 touch random_count.migration.log
 
