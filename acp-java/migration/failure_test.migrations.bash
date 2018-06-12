@@ -143,6 +143,14 @@ function print_item_count() {
   echo $g4_str
 }
 
+function check_command_result() {
+   substring=${string:0:2}
+   if [[ $substring = "OK" ]];
+	  then echo $string
+      else exit
+   fi
+}
+
 echo ">>>>>> $0 $master_port $slave_port $kill_type $start_time $run_interval $run_count"
 
 #prepare migration node and item
@@ -177,19 +185,23 @@ do
    #join case
    echo "Migration join count: $join_num"
    echo "g1 M-$g1_m_port, S-$g1_s_port migration join"
-   echo cluster join begin | nc localhost $g1_m_port
+   string=`echo cluster join begin | nc localhost $g1_m_port`
+   check_command_result
    sleep 3
    echo "g2 M-$g2_m_port, S-$g2_s_port migration join"
-   echo cluster join | nc localhost $g2_m_port
+   string=`echo cluster join | nc localhost $g2_m_port`
+   check_command_result
    echo "g3 M-$g3_m_port, S-$g3_s_port migration join"
-   echo cluster join end | nc localhost $g3_m_port
+   strung=`echo cluster join end | nc localhost $g3_m_port`
+   check_command_result
 
-   sleep 10
+   sleep 60
    print_item_count_some
 
-   sleep 30
+   sleep 60
    echo "g4 M-$g4_m_port, S-$g4_s_port migration join"
-   echo cluster join alone | nc localhost $g4_m_port
+   string=`echo cluster join alone | nc localhost $g4_m_port`
+   check_command_result
    echo "send all migration join command"
 
    sleep 1
@@ -201,27 +213,30 @@ do
    ./killandrun.memcached.mg.bash slave $g2_s_port NONE
 
    sleep 5
-   echo cluster join alone | nc localhost $g2_m_port
+   string=`echo cluster join alone | nc localhost $g2_m_port`
+   check_command_result
 
-   sleep 3
+   sleep 60
    print_item_count
 
-   sleep 30
+   sleep 60
 
    #leave case
    echo "Migration leave count: $leave_num"
    echo "g1 M-$g1_m_port, S-$g1_s_port migration leave"
-   echo cluster leave begin | nc localhost $g1_m_port
+   string=`echo cluster leave begin | nc localhost $g1_m_port`
+   check_command_result
    sleep 3
    echo "g4 M-$g4_m_port, S-$g4_s_port migration leave"
-   echo cluster leave end | nc localhost $g4_m_port
+   string=`echo cluster leave end | nc localhost $g4_m_port`
+   check_command_result
    echo "send all migration leave command"
 
    sleep 1
    kill_exist
    sleep 2
    kill_exist_2
-   sleep 60
+   sleep 120
 
    echo "restart failure node"
    ./killandrun.memcached.mg.bash master $g2_m_port NONE
