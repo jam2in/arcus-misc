@@ -53,7 +53,7 @@ foreach $script (@script_list) {
         "pool_size=20\n" .
         "pool_use_random=false\n" .
         "key_prefix=integrationtest:\n" .
-        "client_exptime=120\n" .
+        "client_exptime=0\n" .
         "client_timeout=5000\n" .
         "client_profile=" . $script . "\n";
     close CONF;
