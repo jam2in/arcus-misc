@@ -21,7 +21,11 @@ sub print_usage {
 if (($#ARGV >= 0) & ($#ARGV <= 2)) {
   if ($#ARGV >= 1) {
     $flag = $ARGV[1];
-    if ($#ARGV == 2) {
+
+    $zk_ip = `ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print \$1}'`;
+    $zk_ip =~ s/\n//g;
+
+    if ($#ARGV == 2 && $flag == 1) {
       $zk_ip = $ARGV[2];
     }
   }
