@@ -82,7 +82,11 @@ sleep 3;
 # 2. run integration perf
 ########################################
 if ($flag eq -1 || $flag eq 1) {
-  $cmd = "./integration/run_integration_perf.pl $zk_ip $m_port $expect_perf";
+  if ($mode eq "sync") {
+      $cmd = "./integration/run_integration_perf.pl $zk_ip $m_port $expect_perf";
+  } else {
+      $cmd = "./integration/run_integration_res_perf.pl $zk_ip $m_port $expect_perf";
+  }
   system($cmd);
   sleep 2;
 }
