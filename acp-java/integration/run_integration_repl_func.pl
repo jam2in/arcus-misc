@@ -50,18 +50,18 @@ use File::Basename;
 # 1. start node(znode must be created)
 ########################################
 if ($flag eq -1) {
-  $cmd = "./integration/run.memcached.bash $m_port $mode";
+  $cmd = "./integration/run.memcached.bash $m_port $mode $zk_ip";
   system($cmd);
-  $cmd = "./integration/run.memcached.stash.bash $stash_port $mode";
+  $cmd = "./integration/run.memcached.stash.bash $stash_port $mode $zk_ip";
   system($cmd);
-  $cmd = "./integration/run.memcached.bash $s_port $mode";
+  $cmd = "./integration/run.memcached.bash $s_port $mode $zk_ip";
   system($cmd);
 } elsif ($flag eq 0) {
   # master node
-  $cmd = "./integration/run.memcached.bash $m_port $mode";
+  $cmd = "./integration/run.memcached.bash $m_port $mode $zk_ip";
   system($cmd);
   if ($mode eq "async") {
-    $cmd = "./integration/run.memcached.stash.bash $stash_port $mode";
+    $cmd = "./integration/run.memcached.stash.bash $stash_port $mode $zk_ip";
     system($cmd);
   }
 } elsif ($flag eq 1) {
