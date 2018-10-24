@@ -83,7 +83,7 @@ sleep 3;
 ########################################
 if ($flag eq -1 || $flag eq 1) {
   if ($mode eq "sync") {
-      $cmd = "./integration/run_integration_rat_perf.pl $zk_ip $m_port $expect_perf";
+      $cmd = "./integration/run_integration_perf.pl $zk_ip $m_port $expect_perf";
   } else {
       $cmd = "./integration/run_integration_res_perf.pl $zk_ip $m_port $expect_perf";
   }
