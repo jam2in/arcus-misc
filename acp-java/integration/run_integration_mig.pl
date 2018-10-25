@@ -48,16 +48,36 @@ if ($flag eq -1 || $flag eq 0) {
     ###########################################
     ######### 1. group g0 node alone ##########
     ###########################################
-    $cmd = "./integration/run.memcached.bash 11281 sync $t_ip;"
-            . "./integration/run.memcached.bash 11282 sync $t_ip;"
-            . "./integration/run.memcached.bash 11283 sync $t_ip;"
-            . "./integration/run.memcached.bash 11284 sync $t_ip;"
-            . "./integration/run.memcached.bash 11285 sync $t_ip;"
-            . "./integration/run.memcached.bash 11286 sync $t_ip;"
-            . "./integration/run.memcached.bash 11287 sync $t_ip;"
-            . "./integration/run.memcached.bash 11288 sync $t_ip;"
-            . "./integration/run.memcached.bash 11289 sync $t_ip;"
-            . "./integration/run.memcached.bash 11290 sync $t_ip";
+    #$cmd = "./integration/run.memcached.bash 11281 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11282 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11283 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11284 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11285 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11286 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11287 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11288 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11289 sync $t_ip;"
+    #        . "./integration/run.memcached.bash 11290 sync $t_ip";
+    #system($cmd);
+    $cmd = "./integration/run.memcached.bash 11281 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11282 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11283 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11284 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11285 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11286 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11287 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11288 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11289 sync $t_ip";
+    system($cmd);
+    $cmd = "./integration/run.memcached.bash 11290 sync $t_ip";
     system($cmd);
     print "11281, 11282, 11283, 11284, 11285, 11286, 11287, 11288, 11289, 11290 memcached node start";
     sleep(3);
