@@ -61,9 +61,6 @@ public class torture_arcus_integration implements client_profile {
     //Logger.getLogger("net.spy.memcached").setLevel(Level.DEBUG);
  }
 
-  int KeyLen = 20;
-  int ExpireTime = 600;
-  String DEFAULT_PREFIX = "arcustest-";
   char[] dummystring = 
     ("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
      "abcdefghijlmnopqrstuvwxyz").toCharArray();
@@ -76,6 +73,7 @@ public class torture_arcus_integration implements client_profile {
   };
   String[] chunk_values;
 
+/* Not used API
   String generateData(int length) {
     String ret = "";
     for (int loop = 0; loop < length; loop++) {
@@ -106,6 +104,7 @@ public class torture_arcus_integration implements client_profile {
       return chunk_values[random.nextInt(chunk_values.length)];
     }
   }
+*/
 
   public boolean do_test(client cli) {
     try {
@@ -134,14 +133,14 @@ public class torture_arcus_integration implements client_profile {
 
   // get:set:delete:incr:decr = 3:1:0.01:0.1:0.0001
   public boolean do_KeyValue(client cli) throws Exception {
-    String key = gen_key("KeyValue");
+    String key = cli.ks.get_key();
     String workloads = chunk_values[24];
     
     // Set 
     for (int i = 0; i < 1; i++) {
       if (!cli.before_request())
         return false;
-      Future<Boolean> fb = cli.next_ac.set(key, ExpireTime, workloads);
+      Future<Boolean> fb = cli.next_ac.set(key, cli.conf.client_exptime, workloads);
       boolean ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("KeyValue: set failed. id=%d key=%s\n", cli.id, key);
@@ -183,7 +182,7 @@ public class torture_arcus_integration implements client_profile {
     if (random.nextInt(1) == 0) {
       if (!cli.before_request())
         return false;
-      Future<Boolean> fb = cli.next_ac.set(key + "numeric", ExpireTime, "1");
+      Future<Boolean> fb = cli.next_ac.set(key + "numeric", cli.conf.client_exptime, "1");
       boolean ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("KeyValue: set numeric failed. id=%d key=%s\n",
@@ -211,7 +210,7 @@ public class torture_arcus_integration implements client_profile {
     if (random.nextInt(1) == 0) {
       if (!cli.before_request())
         return false;
-      Future<Boolean> fb = cli.next_ac.set(key + "numeric", ExpireTime, "1");
+      Future<Boolean> fb = cli.next_ac.set(key + "numeric", cli.conf.client_exptime, "1");
       boolean ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("KeyValue: set numeric failed. id=%d key=%s\n",
@@ -238,7 +237,7 @@ public class torture_arcus_integration implements client_profile {
   }
   
   public boolean do_Collection_Btree(client cli) throws Exception {
-    String key = gen_key("Collection_Btree");
+    String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
     for (int i = 0; i < 4; i++)
       key_list.add(key + i);
@@ -250,7 +249,7 @@ public class torture_arcus_integration implements client_profile {
       new ElementFlagFilter(ElementFlagFilter.CompOperands.Equal,
                             ("EFLAG").getBytes());
     CollectionAttributes attr = new CollectionAttributes();
-    attr.setExpireTime(ExpireTime);
+    attr.setExpireTime(cli.conf.client_exptime);
 
     String[] workloads = { chunk_values[1], 
                            chunk_values[1], 
@@ -471,8 +470,9 @@ public class torture_arcus_integration implements client_profile {
     return true;
   }
 
+/* Map collection not support in some node version. skip test in naver long test
   public boolean do_Collection_Map(client cli) throws Exception {
-    String key = gen_key("Collection_Map");
+    String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
     for (int i = 0; i < 4; i++)
       key_list.add(key + i);
@@ -635,15 +635,16 @@ public class torture_arcus_integration implements client_profile {
 
     return true;
   }
+*/
 
   public boolean do_Collection_Set(client cli) throws Exception {
-    String key = gen_key("Collection_Set");
+    String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
     for (int i = 0; i < 4; i++)
       key_list.add(key + i);
 
     CollectionAttributes attr = new CollectionAttributes();
-    attr.setExpireTime(ExpireTime);
+    attr.setExpireTime(cli.conf.client_exptime);
 
     String[] workloads = { chunk_values[1], 
                            chunk_values[1], 
@@ -784,13 +785,13 @@ public class torture_arcus_integration implements client_profile {
   }
 
   public boolean do_Collection_List(client cli) throws Exception {
-    String key = gen_key("Collection_List");
+    String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
     for (int i = 0; i < 4; i++)
       key_list.add(key + i);
 
     CollectionAttributes attr = new CollectionAttributes();
-    attr.setExpireTime(ExpireTime);
+    attr.setExpireTime(cli.conf.client_exptime);
 
     String[] workloads = { chunk_values[1], 
                            chunk_values[1], 
