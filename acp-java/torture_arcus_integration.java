@@ -239,7 +239,7 @@ public class torture_arcus_integration implements client_profile {
   public boolean do_Collection_Btree(client cli) throws Exception {
     String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 2; i++)
       key_list.add(key + i);
     
     String bkeyBASE = "bkey_byteArry";
@@ -258,9 +258,9 @@ public class torture_arcus_integration implements client_profile {
                            chunk_values[3] };
 
     // BopInsert + byte_array bkey
-    for (int j = 0; j < 4; j++) {
-      // Insert 50 bkey
-      for (int i = 0; i < 50; i++) {
+    for (int j = 0; j < 2; j++) {
+      // Insert 10 bkey
+      for (int i = 0; i < 10; i++) {
         if (!cli.before_request())
           return false;
         // Uniq bkey
@@ -284,7 +284,7 @@ public class torture_arcus_integration implements client_profile {
     // Bop Bulk Insert (Piped Insert)
     {
       List<Element<Object>> elements = new LinkedList<Element<Object>>();
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < 10; i++) {
         String bk = bkeyBASE + "0" + Integer.toString(i) + "bulk";
         elements.add(new Element<Object>(bk.getBytes(), workloads[0], eflag));
       }
@@ -311,17 +311,17 @@ public class torture_arcus_integration implements client_profile {
     }
 
     // BopGet Range + filter
-    for (int j = 0; j < 4; j++) {
+    for (int j = 0; j < 2; j++) {
       if (!cli.before_request())
         return false;
       String bk = bkeyBASE + Integer.toString(j) + Integer.toString(0);
-      String bk_to = bkeyBASE + Integer.toString(j) + Integer.toString(50);
+      String bk_to = bkeyBASE + Integer.toString(j) + Integer.toString(10);
       byte[] bkey = bk.getBytes();
       byte[] bkey_to = bk_to.getBytes();
       CollectionFuture<Map<ByteArrayBKey, Element<Object>>> f =
         cli.next_ac.asyncBopGet(key_list.get(j), bkey, bkey_to, filter,
-                                0, random.nextInt(30) + 20,
-                                /* random.randint(20, 50) */
+                                0, random.nextInt(10) + 10,
+                                /* random.randint(10, 20) */
                                 false, false);
       Map<ByteArrayBKey, Element<Object>> val = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
@@ -339,14 +339,14 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.before_request())
         return false;
       String bk = bkeyBASE + "0" + "0";
-      String bk_to = bkeyBASE + "4" + "50";
+      String bk_to = bkeyBASE + "2" + "20";
       byte[] bkey = bk.getBytes();
       byte[] bkey_to = bk_to.getBytes();
       CollectionGetBulkFuture
         <Map<String, BTreeGetResult<ByteArrayBKey, Object>>> f =
         cli.next_ac.asyncBopGetBulk(key_list, bkey, bkey_to, filter, 0,
-                                    random.nextInt(30) + 20
-                                    /* random.randint(20, 50) */);
+                                    random.nextInt(10) + 10
+                                    /* random.randint(10, 20) */);
       Map<String, BTreeGetResult<ByteArrayBKey, Object>> val = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
@@ -383,14 +383,14 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.before_request())
         return false;
       String bk = bkeyBASE + "0" + "0";
-      String bk_to = bkeyBASE + "4" + "50";
+      String bk_to = bkeyBASE + "2" + "10";
       byte[] bkey = bk.getBytes();
       byte[] bkey_to = bk_to.getBytes();
       SMGetFuture<List<SMGetElement<Object>>> f =
         cli.next_ac.asyncBopSortMergeGet(key_list, bkey, bkey_to, 
                                          filter, 0, 
-                                         random.nextInt(30) + 20
-                                         /* random.randint(20, 50) */);
+                                         random.nextInt(10) + 10
+                                         /* random.randint(10, 20) */);
       List<SMGetElement<Object>> val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
         System.out.printf("Collection_Btree: BopSortMergeGet failed." +
@@ -446,7 +446,7 @@ public class torture_arcus_integration implements client_profile {
     
     // BopDelete          (eflag filter delete)
     {
-      for (int j = 0; j < 4; j++) {
+      for (int j = 0; j < 2; j++) {
         if (!cli.before_request())
           return false;
         String bk = bkeyBASE + Integer.toString(j) + "0";
@@ -640,7 +640,7 @@ public class torture_arcus_integration implements client_profile {
   public boolean do_Collection_Set(client cli) throws Exception {
     String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 2; i++)
       key_list.add(key + i);
 
     CollectionAttributes attr = new CollectionAttributes();
@@ -654,7 +654,7 @@ public class torture_arcus_integration implements client_profile {
 
     // SopInsert
     {
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 19; j++) {
           if (!cli.before_request())
             return false;
@@ -676,7 +676,7 @@ public class torture_arcus_integration implements client_profile {
     // SopInsert Bulk (Piped)
     {
       List<Object> elements = new LinkedList<Object>();
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < 10; i++) {
         elements.add((Integer.toString(i) + "_" + workloads[0]));
       }
       if (!cli.before_request())
@@ -720,7 +720,7 @@ public class torture_arcus_integration implements client_profile {
     
     // SopExist    (Piped exist)
     {
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 2; i++) {
         List<Object> list_value = new LinkedList<Object>();
         for (int j = 0; j < 9; j++) {
           if (!cli.before_request())
@@ -762,7 +762,7 @@ public class torture_arcus_integration implements client_profile {
     
     // SopDelete
     {
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 4; j++) {
           if (!cli.before_request())
             return false;
@@ -787,7 +787,7 @@ public class torture_arcus_integration implements client_profile {
   public boolean do_Collection_List(client cli) throws Exception {
     String key = cli.ks.get_key();
     List<String> key_list = new LinkedList<String>();
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 2; i++)
       key_list.add(key + i);
 
     CollectionAttributes attr = new CollectionAttributes();
@@ -802,8 +802,8 @@ public class torture_arcus_integration implements client_profile {
     // LopInsert
     {
       int index = -1; // tail insert
-      for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 50; j++) {
+      for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 10; j++) {
           if (!cli.before_request())
             return false;
           CollectionFuture<Boolean> f = cli.next_ac
@@ -824,7 +824,7 @@ public class torture_arcus_integration implements client_profile {
     // LopInsert Bulk (Piped)
     {
       List<Object> elements = new LinkedList<Object>();
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < 10; i++) {
         elements.add(Integer.toString(i) + "_" + workloads[0]);
       }
       if (!cli.before_request())
@@ -851,12 +851,12 @@ public class torture_arcus_integration implements client_profile {
 
     // LopGet
     {
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 2; i++) {
         if (!cli.before_request())
           return false;
         int index = 0;
         int index_to = index + 
-          /* random.randint(20, 50) */ random.nextInt(30) + 20;
+          /* random.randint(10, 20) */ random.nextInt(10) + 10;
         CollectionFuture<List<Object>> f =
           cli.next_ac.asyncLopGet(key_list.get(i), index, index_to, 
                                   false, false);
