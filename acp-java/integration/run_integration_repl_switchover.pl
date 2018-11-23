@@ -6,12 +6,15 @@ my $m_port = 11293; # master port
 my $s_port = 11294; # slave  port
 my $run_time = 600;
 my $keyset_size = 10000000;
+my $zk_ip = 127.0.0.1;
 my $cmd = "";
 sub print_usage {
-  print "Usage) perl ./integration/run_integration_repl_switchover.pl\n";
+  print "Usage) perl ./integration/run_integration_repl_switchover.pl <server_ip>\n";
 }
 
-if ($#ARGV == -1) {
+if ($#ARGV eq 0) {
+  $zk_ip = $ARGV[0];
+  print "server_ip = $zk_ip\n";
   print "master_port = $m_port\n";
   print "slave_port  = $s_port\n";
   print "run_time = $run_time\n";
@@ -27,8 +30,8 @@ use File::Basename;
 ########################################
 # 1. start node(znode must be created) #
 ########################################
-$cmd = "./integration/run.memcached.bash $m_port sync"; system($cmd);
-$cmd = "./integration/run.memcached.bash $s_port sync"; system($cmd);
+$cmd = "./integration/run.memcached.bash $m_port sync $zk_ip"; system($cmd);
+$cmd = "./integration/run.memcached.bash $s_port sync $zk_ip"; system($cmd);
 sleep 1;
 $cmd = "echo \"cluster join alone\" | nc $zk_ip $m_port"; system($cmd);
 sleep 1;
