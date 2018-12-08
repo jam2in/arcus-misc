@@ -39,29 +39,23 @@ my $cmd;
 ###########################################
 if ($mode == 0) { # 3 nodes
     $cmd = "./integration/run.memcached.bash 11301;"
-         . "./integration/run.memcached.bash 11303;"
-         . "./integration/run.memcached.bash 11305";
+         . "./integration/run.memcached.bash 11303;";
     system($cmd);
     $cmd = "echo \"cluster join begin\" | nc localhost 11301";
     system($cmd); sleep(3);
-    $cmd = "echo \"cluster join\" | nc localhost 11303";
+    $cmd = "echo \"cluster join end\" | nc localhost 11303";
     system($cmd); sleep(3);
-    $cmd = "echo \"cluster join end\" | nc localhost 11305";
-    system($cmd); sleep(10);
 } elsif ($mode == 1) { # 4 nodes
     $cmd = "./integration/run.memcached.bash 11307;"
          . "./integration/run.memcached.bash 11309;"
-         . "./integration/run.memcached.bash 11311;"
-         . "./integration/run.memcached.bash 11313";
+         . "./integration/run.memcached.bash 11311;";
     system($cmd);
     $cmd = "echo \"cluster join begin\" | nc localhost 11307";
     system($cmd); sleep(3);
     $cmd = "echo \"cluster join\" | nc localhost 11309";
     system($cmd); sleep(3);
-    $cmd = "echo \"cluster join\" | nc localhost 11311";
+    $cmd = "echo \"cluster join end\" | nc localhost 11311";
     system($cmd); sleep(3);
-    $cmd = "echo \"cluster join end\" | nc localhost 11313";
-    system($cmd); sleep(10);
 }
 #########################################
 # 2. start xdcr node
@@ -69,33 +63,34 @@ if ($mode == 0) { # 3 nodes
 if ($mode == 0) { # 3 nodes
     $another_idc_ip = "10.32.24.105:9181";
     $cmd = "./integration/run.memcached.stash.bash 11306 $mode";
-    system($cmd); sleep(1);
+    system($cmd);
     $cmd = "echo \"xdcr register g0 $another_idc_ip\" | nc localhost 11306;"
-         . "echo \"xdcr register g1 $another_idc_ip\" | nc localhost 11306;"
-         . "echo \"xdcr register g2 $another_idc_ip\" | nc localhost 11306";
+         . "echo \"xdcr register g1 $another_idc_ip\" | nc localhost 11306;";
     system($cmd); sleep(1);
 } elsif ($mode == 1) { # 4 nodes
     $another_idc_ip = "10.32.27.100:9181";
-    $cmd = "./integration/run.memcached.stash.bash 11314 $mode";
+    $cmd = "./integration/run.memcached.stash.bash 11314 $mode;"
+         . "./integration/run.memcached.stash.bash 11316 $mode;";
     system($cmd); sleep(1);
     $cmd = "echo \"xdcr register g3 $another_idc_ip\" | nc localhost 11314;"
-         . "echo \"xdcr register g4 $another_idc_ip\" | nc localhost 11314;"
-         . "echo \"xdcr register g5 $another_idc_ip\" | nc localhost 11314;"
-         . "echo \"xdcr register g6 $another_idc_ip\" | nc localhost 11314";
+         . "echo \"xdcr register g4 $another_idc_ip\" | nc localhost 11314;";
+    system($cmd); sleep(1);
+    $cmd = "echo \"xdcr register g5 $another_idc_ip\" | nc localhost 11316;";
     system($cmd); sleep(1);
 }
 
-my $operation_dumpfile = "tmp-integration-dumpfile.txt";
-$cmd = "rm ./$operation_dumpfile";
-system($cmd);
 
 #########################################
 # 3. set operation on 3 nodes cluster
 #########################################
 if ($mode == 2) {
+  my $operation_dumpfile = "tmp-integration-dumpfileA.txt";
+  $cmd = "rm ./$operation_dumpfile";
+  system($cmd);
+
   open CONF, ">tmp-integration-config.txt" or die $!;
   print CONF
-      "zookeeper=127.0.0.1:9181\n" .
+      "zookeeper=10.32.27.100:9181\n" .
       "service_code=test_idc\n" .
       #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
       "client=10\n" .
@@ -132,9 +127,13 @@ if ($mode == 2) {
 # 4. get operation on 4 nodes cluster
 #########################################
 if ($mode == 3) {
+  my $operation_dumpfile = "tmp-integration-dumpfileB.txt";
+  $cmd = "rm ./$operation_dumpfile";
+  system($cmd);
+
   open CONF, ">tmp-integration-config.txt" or die $!;
   print CONF
-      "zookeeper=127.0.0.1:9181\n" .
+      "zookeeper=10.32.24.105:9181\n" .
       "service_code=test_idc\n" .
       #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
       "client=100\n" .
