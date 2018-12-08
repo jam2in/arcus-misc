@@ -175,7 +175,7 @@ public class client implements Runnable {
   public synchronized boolean write_operation(String key, byte[] val) {
     String txt;
 
-    if (val != null) txt = key + "," + val + "\n";
+    if (val != null) txt = key + "," + new String(val) + "\n";
     else             txt = key + "\n";
     do {
       if (this.fw != null) {
