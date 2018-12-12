@@ -19,7 +19,8 @@ if ($#ARGV == 1) {
 
 sleep $k_intv;
 
-my $cmd = "kill -9 \$(ps -ef | awk '/sync.config; -p $k_port/ {print \$2}')";
+my $cmd = "kill -9 \$(ps -ef | grep $k_port | awk '{print \$2}')";
+#my $cmd = "kill -9 \$(ps -ef | awk '/sync.config; -p $k_port/ {print \$2}')";
 #my $cmd = "kill \$(ps -ef | awk '/-b 8192 -m2048 -p $k_port/ {print \$2}')";
 printf "RUN COMMAND = $cmd\n";
 system($cmd);
