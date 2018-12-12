@@ -114,7 +114,7 @@ if ($flag eq -1 || $flag eq 1) {
       "service_code=test_rp\n" .
       #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
       "client=100\n" .
-      "rate=0\n" .
+      "rate=400\n" .
       "request=0\n" .
       "time=$run_time\n" .
       "keyset_size=$keyset_size\n" .
