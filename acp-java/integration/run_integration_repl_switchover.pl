@@ -58,7 +58,7 @@ print CONF
     "service_code=test_rp\n" .
     #"single_server=" . $t_ip . ":" . $t_port . "\n" .
     "client=100\n" .
-    "rate=0\n" .
+    "rate=400\n" .
     "request=0\n" .
     "time=600\n" .
     "keyset_size=$keyset_size\n" .
