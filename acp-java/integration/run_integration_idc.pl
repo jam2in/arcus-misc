@@ -9,8 +9,8 @@ my $mode = ""; # 0 : run cluster with 3 nodes.
                # 1 : run cluster with 4 nodes.
                # 2 : set operation on 3 nodes.
                # 3 : get operation on 4 nodes.
-my $idc_a_ip = "10.32.27.100";
-my $idc_b_ip = "10.32.24.105";
+my $idc_a_ip = "10.32.24.105";
+my $idc_b_ip = "10.32.27.100";
 sub print_usage {
     print "Usage) perl ./integration/run_integration_idc.pl <mode(0(3node start) | 1(4node start)) | 2(set operation(3node)) | 3(get operation(4node))>\n";
 }
