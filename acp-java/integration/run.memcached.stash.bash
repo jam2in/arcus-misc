@@ -41,11 +41,11 @@ while :
 do
   if [ $repl_mode == "sync" ];
   then
-    $MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip\:9181 -e "replication_config_file=integration/repl.sync.config;" -p $port_num -o 3 -g 100
-    echo "$MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip\:9181 -e \"replication_config_file=integration/repl.sync.config;\" -p $port_num -o 3 -g 100"
+    $MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip:9181 -e "replication_config_file=integration/repl.sync.config;" -p $port_num -o 3 -g 100
+    echo "$MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip:9181 -e \"replication_config_file=integration/repl.sync.config;\" -p $port_num -o 3 -g 100"
   else # run as "async mode""
-    $MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip\:9181 -e "replication_config_file=integration/repl.async.config;" -p $port_num -o 3 -g 100
-    echo "$MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip\:9181 -e \"replication_config_file=integration/repl.async.config;\" -p $port_num -o 3 -g 100"
+    $MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip:9181 -e "replication_config_file=integration/repl.async.config;" -p $port_num -o 3 -g 100
+    echo "$MEMC_DIR/memcached -E $MEMC_DIR/.libs/default_engine.so -X $MEMC_DIR/.libs/syslog_logger.so -X $MEMC_DIR/.libs/ascii_scrub.so -d -w -v -r -R5 -U 0 -D: -b 8192 -m2048 -p $port_num -c 1000 -t $thread_count -z $zk_ip:9181 -e \"replication_config_file=integration/repl.async.config;\" -p $port_num -o 3 -g 100"
   fi
 
   sleep $sleep_time
