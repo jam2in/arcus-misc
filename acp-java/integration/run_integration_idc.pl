@@ -60,18 +60,19 @@ if ($mode == 0) { # 3 nodes
 # 2. start xdcr node
 #########################################
 if ($mode == 0) { # 3 nodes
-    $cmd = "./integration/run.memcached.stash.bash 11306 sync $idc_a_ip";
+    $cmd = "./integration/run.memcached.stash.bash 11306 sync $idc_a_ip;";
     system($cmd); sleep(1);
     $cmd = "echo \"xdcr register g0 $idc_b_ip:9181\" | nc localhost 11306;"
          . "echo \"xdcr register g1 $idc_b_ip:9181\" | nc localhost 11306;";
     system($cmd); sleep(1);
 } elsif ($mode == 1) { # 4 nodes
-    $cmd = "./integration/run.memcached.stash.bash 11314 sync $idc_b_ip";
+    $cmd = "./integration/run.memcached.stash.bash 11314 sync $idc_b_ip;"
+         . "./integration/run.memcached.stash.bash 11316 sync $idc_b_ip;";
     system($cmd); sleep(1);
     $cmd = "echo \"xdcr register g3 $idc_a_ip:9181\" | nc localhost 11314;"
-         . "echo \"xdcr register g4 $idc_a_ip:9181\" | nc localhost 11314;"
-         . "echo \"xdcr register g5 $idc_a_ip:9181\" | nc localhost 11314;"
-         . "echo \"xdcr register g6 $idc_a_ip:9181\" | nc localhost 11314";
+         . "echo \"xdcr register g4 $idc_a_ip:9181\" | nc localhost 11314;";
+    system($cmd); sleep(1);
+    $cmd = "echo \"xdcr register g5 $idc_a_ip:9181\" | nc localhost 11316;";
     system($cmd); sleep(1);
 }
 
