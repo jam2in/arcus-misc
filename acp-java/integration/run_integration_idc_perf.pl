@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 $t_ip = 0;   # test ip
 $t_port = 0; # test port
-$est_perf = 0; # estimated performance
+$est_perf = 30000; # estimated performance
 $client = 256;
 $timeout = 1000;
 $idc_zkip = "127.0.0.1";
