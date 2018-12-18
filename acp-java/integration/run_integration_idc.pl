@@ -87,7 +87,7 @@ if ($mode == 2) {
 
   open CONF, ">tmp-integration-config.txt" or die $!;
   print CONF
-      "zookeeper=10.32.27.100:9181\n" .
+      "zookeeper=10.32.24.105:9181\n" .
       "service_code=test_idc\n" .
       #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
       "client=10\n" .
@@ -130,7 +130,7 @@ if ($mode == 3) {
 
   open CONF, ">tmp-integration-config.txt" or die $!;
   print CONF
-      "zookeeper=10.32.24.105:9181\n" .
+      "zookeeper=10.32.27.100:9181\n" .
       "service_code=test_idc\n" .
       #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
       "client=100\n" .
