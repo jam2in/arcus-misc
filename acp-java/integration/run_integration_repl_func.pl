@@ -15,7 +15,7 @@ my $flag = -1; # -1 : start test(client, server)
 my $cmd;
 
 sub print_usage {
-  print "Usage) perl ./integration/run_integration_repl_func.pl <sync | async> [[server(0) client(1)] [ZK_IP]]\n";
+  print "Usage) perl ./integration/run_integration_repl_func.pl <sync | async | stash> [[server(0) client(1)] [ZK_IP]]\n";
 }
 
 if (($#ARGV >= 0) & ($#ARGV <= 2)) {
@@ -30,7 +30,7 @@ if (($#ARGV >= 0) & ($#ARGV <= 2)) {
     }
   }
 
-  if (($ARGV[0] eq "sync") || ($ARGV[0] eq "async")) {
+  if (($ARGV[0] eq "sync") || ($ARGV[0] eq "async") || ($ARGV[0] eq "stash")) {
     $mode = $ARGV[0];
   } else {
     print_usage();
@@ -62,10 +62,13 @@ if ($flag eq -1) {
   system($cmd);
 } elsif ($flag eq 0) {
   # master node
-  $cmd = "./integration/run.memcached.bash $m_port $mode $zk_ip";
-  system($cmd);
-  if ($mode eq "async") {
+  if ($mode eq "stash") {
+    $cmd = "./integration/run.memcached.bash $m_port sync $zk_ip";
+    system($cmd);
     $cmd = "./integration/run.memcached.stash.bash $stash_port $mode $zk_ip";
+    system($cmd);
+  } else {
+    $cmd = "./integration/run.memcached.bash $m_port $mode $zk_ip";
     system($cmd);
   }
 } elsif ($flag eq 1) {
@@ -91,7 +94,7 @@ sleep 3;
 ##########################
 # 4. enable stash node
 ##########################
-if (($flag eq -1 || $flag eq 0) && ($mode eq "async")) {
+if (($flag eq -1 || $flag eq 0) && ($mode eq "stash")) {
   $cmd = `echo "stash register g0" | nc localhost $stash_port`;
 }
 
