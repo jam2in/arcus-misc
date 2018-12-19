@@ -6,6 +6,7 @@ use strict;
 my $keyset_size = 1000;
 my $IDC_A_IP;
 my $IDC_B_IP;
+my $run_time = 60;
 sub print_usage {
     print "Usage) perl ./integration/run_integration_idc.pl <IDC_A_IP> <IDC_B_IP>\n";
 }
@@ -34,7 +35,7 @@ print CONF
     "client=32\n" .
     "rate=0\n" .
     "request=0\n" .
-    "time=600\n" .
+    "time=$run_time\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .
@@ -65,7 +66,7 @@ print CONF
     "client=32\n" .
     "rate=0\n" .
     "request=0\n" .
-    "time=600\n" .
+    "time=$run_time\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .
@@ -90,7 +91,7 @@ if ($ret ne 0) {
   exit(1);
 }
 
-sleep 60; # after few seconds.. run kill command.
+sleep $run_time; # after few seconds.. run kill command.
 
 ########################################################
 # 3. kill acp-java same time 
@@ -114,7 +115,7 @@ print CONF
     "client=32\n" .
     "rate=0\n" .
     "request=0\n" .
-    "time=600\n" .
+    "time=$run_time\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .
@@ -152,7 +153,7 @@ print CONF
     "client=32\n" .
     "rate=0\n" .
     "request=0\n" .
-    "time=600\n" .
+    "time=$run_time\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .
@@ -178,21 +179,3 @@ if ($ret ne 0) {
   exit(1);
 }
 
-sleep 20;
-
-##############################################################
-# 6. compare $Adumpfile and $Bdumpfile
-##############################################################
-system("echo -e \'\033[33mstart compare file....\033[0m\'");
-$cmd = "./integration/compare.pl $Adumpfile $Bdumpfile";
-$ret = $system($cmd);
-
-if ($ret ne 0) {
-  print "#########################\n";
-  print "FAILED IDC FUNCTIONAL TEST\n";
-  print "#########################\n";
-} else {
-  print "#########################\n";
-  print "SUCCESS IDC FUNCTIONAL TEST\n";
-  print "#########################\n";
-}
