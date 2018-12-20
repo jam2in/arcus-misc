@@ -31,8 +31,16 @@ function m_stats() {
    echo stats replication | nc $MASTER_IP $rp_m_port | grep $1
 }
 
+function m_count() {
+   echo stats | nc $MASTER_IP $rp_m_port | grep curr_items
+}
+
 function s_stats() {
    echo stats replication | nc $SLAVE_IP $rp_s_port | grep $1
+}
+
+function s_count() {
+   echo stats | nc $SLAVE_IP $rp_s_port | grep curr_items
 }
 
 function print_info() {
@@ -51,19 +59,27 @@ function print_mig_state() {
   m_str=$(m_stats state)
   m_state=${m_str:11}
 
+  m_str=$(m_count)
+  m_count=${m_str:16}
+
   s_str=$(s_stats mode)
   s_mode=${s_str:10}
 
   s_str=$(s_stats state)
   s_state=${s_str:11}
 
+  s_str=$(s_count)
+  s_count=${s_str:16}
+
   echo "# master node"
   print_info $MASTER_IP\:$rp_m_port mode $m_mode
   print_info $MASTER_IP\:$rp_m_port state $m_state
+  print_info $MASTER_IP\:$rp_m_port "item_count" $m_count
   echo
   echo "# slave node"
   print_info $SLAVE_IP\:$rp_s_port mode $s_mode
   print_info $SLAVE_IP\:$rp_s_port state $s_state
+  print_info $SLAVE_IP\:$rp_s_port "item_count" $s_count
 }
 
 
