@@ -12,6 +12,7 @@ if [[ $# -le 3 && $# -ge 1 ]]; then
     fi
 
     if [ $# -le 3 ]; then
+        MASTER_IP="$2"
         SLAVE_IP="$3"
     else
         SLAVE_IP="127.0.0.1"
