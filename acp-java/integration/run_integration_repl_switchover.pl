@@ -57,8 +57,8 @@ print CONF
     "zookeeper=127.0.0.1:9181\n" .
     "service_code=test_rp\n" .
     #"single_server=" . $t_ip . ":" . $t_port . "\n" .
-    "client=100\n" .
-    "rate=400\n" .
+    "client=10\n" .
+    "rate=1000\n" .
     "request=0\n" .
     "time=600\n" .
     "keyset_size=$keyset_size\n" .
