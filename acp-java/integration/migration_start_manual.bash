@@ -21,7 +21,7 @@ if [[ $# -le 2 && $# -ge 1 ]]; then
         SERVER_IP="127.0.0.1"
     fi
 else
-    echo "Usage) ./integration/migration_start_manual.bash <0(leave) or 1(join) or 2(flush all nodes) or 3(node stats)> [SERVER_IP]>"
+    echo "Usage) ./integration/migration_start_manual.bash <0(leave) or 1(join) or 2(flush all nodes) or 3(node stats)> <SERVER_IP>"
     exit 1;
 fi
 
