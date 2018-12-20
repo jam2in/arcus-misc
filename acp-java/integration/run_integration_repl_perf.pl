@@ -15,7 +15,10 @@ my $flag = -1; # -1 : start test(client, server)
 my $cmd;
 
 sub print_usage {
-  print "Usage) perl ./integration/run_integration_repl_perf.pl <sync | async> [[server(0) client(1)] [ZK_IP]]>\n";
+  print "Usage) perl ./integration/run_integration_repl_perf.pl <mode> <flag> <ZK_IP>\n";
+  print "   <mode>  : replication mode, sync or async\n";
+  print "   <flag>  : master run - 0, slave & client run - 1\n";
+  print "   <ZK_IP> : zookeeper ip address\n";
 }
 
 if ($#ARGV == 0 || $#ARGV == 1 || $#ARGV == 2) {
