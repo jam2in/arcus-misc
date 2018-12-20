@@ -17,7 +17,7 @@ if [[ $# -le 3 && $# -ge 1 ]]; then
         SLAVE_IP="127.0.0.1"
     fi
 else
-    echo "Usage) ./integration/replication_manual.bash <0(stats)> [MASTER_IP] [SLAVE_IP]> <1: kill master node(11291)>";
+    echo "Usage) ./integration/replication_manual.bash <0(status) MASTER_IP SLAVE_IP> <1(kill master)>";
     exit 1;
 fi
 
