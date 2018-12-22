@@ -6,7 +6,7 @@ use strict;
 my $keyset_size = 1000;
 my $IDC_A_IP;
 my $IDC_B_IP;
-my $run_time = 60;
+my $run_time = 100;
 sub print_usage {
     print "Usage) perl ./integration/run_integration_idc.pl <IDC_A_IP> <IDC_B_IP>\n";
 }
@@ -91,12 +91,12 @@ if ($ret ne 0) {
   exit(1);
 }
 
-sleep $run_time; # after few seconds.. run kill command.
+sleep 60; # after few seconds.. run kill command.
 
 ########################################################
 # 3. kill acp-java same time 
 ########################################################
-$cmd = "kill -9 \$(ps -ef | awk '/config tmp_integration-config.txt/ {print \$2}')";
+$cmd = "kill -9 `ps -ef | grep 'acp -config' | awk '{print \$2}'`";
 print "RUN COMMAND = $cmd\n";
 system($cmd);
 print "arcus misc killed... start get operation\n";
@@ -105,9 +105,15 @@ sleep 3;
 
 my $Adumpfile = "tmp-integration-dumpfile-AIDC.txt";
 my $Bdumpfile = "tmp-integration-dumpfile-BIDC.txt";
+
+$cmd = "rm ./$Adumpfile";
+system($cmd);
+$cmd = "rm ./$Bdumpfile";
+system($cmd);
 ########################################################
 # 4. get operation on A IDC
 ########################################################
+
 open CONF, ">tmp-integration-config.txt" or die $!;
 print CONF
     "zookeeper=$IDC_A_IP:9181\n" .
