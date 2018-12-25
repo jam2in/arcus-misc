@@ -21,10 +21,10 @@ class keyset_default implements keyset {
   String[] set;
   int next_idx;
   // for integration test
-  boolean keyset_store;
   int offset;
+  boolean useKeyRoop;
 
-  public keyset_default(int num, String prefix) {
+  public keyset_default(int num, String prefix, boolean useKeyRoop) {
     set = new String[num];
     for (int i = 0; i < num; i++) {
       set[i] = "testkey-" + i;
@@ -32,12 +32,12 @@ class keyset_default implements keyset {
         set[i] = prefix + set[i];
     }
     this.offset = 0;
+    this.useKeyRoop = useKeyRoop;
     reset();
   }
 
   public void reset() {
     next_idx = 0;
-    keyset_store = false;
   }
 
   public String get_key_by_cliid(client cli) {
@@ -49,13 +49,12 @@ class keyset_default implements keyset {
   synchronized public String get_key() {
     int idx = next_idx++;
     if (next_idx >= set.length) {
-      keyset_store = true;
-      next_idx = 0;
+      if (useKeyRoop) {
+        next_idx = 0;
+      } else {
+        return null;
+      }
     }
     return set[idx];
-  }
-
-  synchronized public boolean keyset_store() {
-      return keyset_store;
   }
 }

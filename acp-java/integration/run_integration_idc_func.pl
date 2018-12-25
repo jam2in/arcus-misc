@@ -121,7 +121,7 @@ print CONF
     "client=32\n" .
     "rate=0\n" .
     "request=0\n" .
-    "time=$run_time\n" .
+    "time=-1\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .
@@ -159,7 +159,7 @@ print CONF
     "client=32\n" .
     "rate=0\n" .
     "request=0\n" .
-    "time=$run_time\n" .
+    "time=-1\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .

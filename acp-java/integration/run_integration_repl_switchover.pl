@@ -60,7 +60,7 @@ print CONF
     "client=10\n" .
     "rate=1000\n" .
     "request=0\n" .
-    "time=600\n" .
+    "time=-1\n" .
     "keyset_size=$keyset_size\n" .
     "valueset_min_size=10\n" .
     "valueset_max_size=30\n" .

@@ -44,10 +44,10 @@ public class integration_repltest implements client_profile {
     boolean ok = false;
 
     // set as many keys as cli.conf.keyset_size
-    if (!cli.ks.keyset_store()) {
+    key = cli.ks.get_key();
+    if (key != null) {
       if (!cli.before_request())
         return false;
-      key = cli.ks.get_key();
       val = cli.vset.get_value();
       do {
         try {

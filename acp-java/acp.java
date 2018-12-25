@@ -80,13 +80,20 @@ class acp {
   public void setup() throws Exception {
     // Key profile
     keyset kset = null;
+    boolean useKeyRoop = true;
+    if (conf.time < 0) {
+      useKeyRoop = false;
+      conf.time = 0;
+    }
+
     if (conf.keyset_profile.equals("default")) {
-      kset = new keyset_default(conf.keyset_size, conf.key_prefix);
+      kset = new keyset_default(conf.keyset_size, conf.key_prefix, useKeyRoop);
     }
     else if (conf.keyset_profile.equals("numeric")) {
       kset = new keyset_numeric(conf.keyset_size, conf.keyset_length,
-                                conf.key_prefix);
+                                conf.key_prefix, useKeyRoop);
     }
+
     if (kset == null) {
       System.out.println("Cannot find keyset profile=" + conf.keyset_profile);
       System.exit(0);
