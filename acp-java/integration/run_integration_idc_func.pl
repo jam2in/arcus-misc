@@ -6,7 +6,7 @@ use strict;
 my $keyset_size = 1000;
 my $IDC_A_IP;
 my $IDC_B_IP;
-my $run_time = 100;
+my $run_time = 200;
 sub print_usage {
     print "Usage) perl ./integration/run_integration_idc.pl <IDC_A_IP> <IDC_B_IP>\n";
 }
@@ -91,7 +91,7 @@ if ($ret ne 0) {
   exit(1);
 }
 
-sleep 60; # after few seconds.. run kill command.
+sleep 120; # after few seconds.. run kill command.
 
 ########################################################
 # 3. kill acp-java same time 
