@@ -33,7 +33,7 @@ print CONF
     "zookeeper=$IDC_A_IP:9181\n" .
     "service_code=test_idc\n" .
     "client=32\n" .
-    "rate=10\n" .
+    "rate=15\n" .
     "request=0\n" .
     "time=$run_time\n" .
     "keyset_size=$keyset_size\n" .
@@ -64,7 +64,7 @@ print CONF
     "zookeeper=$IDC_B_IP:9181\n" .
     "service_code=test_idc\n" .
     "client=32\n" .
-    "rate=20\n" .
+    "rate=10\n" .
     "request=0\n" .
     "time=$run_time\n" .
     "keyset_size=$keyset_size\n" .
