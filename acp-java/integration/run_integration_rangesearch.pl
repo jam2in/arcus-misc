@@ -45,7 +45,7 @@ foreach $script (@script_list) {
         "client=1\n" .
         "rate=0\n" .
         "request=0\n" .
-        "time=6000000\n" .
+        "time=-1\n" .
         "keyset_size=10000\n" .
         "valueset_min_size=20\n" .
         "valueset_max_size=20\n" .

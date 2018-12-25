@@ -45,31 +45,31 @@ public class integration_onlyset implements client_profile {
     Future<Boolean> fb;
     boolean ok = false;
     int tries = 10;
-    if (!cli.ks.keyset_store()) {
-      if (!cli.before_request())
-        return false;
-      key = cli.ks.get_key();
-      val = cli.vset.get_value();
-      do {
-        try {
-          fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
-          ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-        } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
-          if (tries-- <= 0) {
-            System.out.println("test failed operationtimeout over 10 times");
-            System.exit(1);
-          }
-          System.out.println("this test should not occur with TimeoutException... retry set key : " + key);
-        } catch (Exception e) {
-          System.out.println("retry set operation after 1 seconds");
-          Thread.sleep(1000);
-        }
-      } while (!ok);
-      if (!cli.after_request(ok))
-        return false;
-    } else {
-        cli.set_stop(true);
+    if (!cli.before_request())
+      return false;
+    key = cli.ks.get_key();
+    if (key == null) {
+      cli.set_stop(true);
+      return true;
     }
+    val = cli.vset.get_value();
+    do {
+      try {
+        fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+        ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
+      } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
+        if (tries-- <= 0) {
+          System.out.println("test failed operationtimeout over 10 times");
+          System.exit(1);
+        }
+        System.out.println("this test should not occur with TimeoutException... retry set key : " + key);
+      } catch (Exception e) {
+        System.out.println("retry set operation after 1 seconds");
+        Thread.sleep(1000);
+      }
+    } while (!ok);
+    if (!cli.after_request(ok))
+      return false;
     return true;
   }
 }

@@ -118,7 +118,7 @@ if ($flag eq -1 || $flag eq 1) {
       #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
       "client=100\n" .
       "rate=400\n" .
-      "request=0\n" .
+      "request=-1\n" .
       "time=$run_time\n" .
       "keyset_size=$keyset_size\n" .
       "valueset_min_size=10\n" .

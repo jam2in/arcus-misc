@@ -48,10 +48,10 @@ public class integration_rangesearch implements client_profile {
     CollectionFuture<List<Object>> fl;
     OperationStatus status;
 
-    if (!cli.ks.keyset_store()) {
+    key = cli.ks.get_key();
+    if (key != null) {
       if (!cli.before_request())
         return false;
-      key = cli.ks.get_key();
       val = cli.vset.get_value();
       fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
@@ -100,7 +100,6 @@ public class integration_rangesearch implements client_profile {
       }
       cli.set_stop(true);
     }
-
 
     return true;
   }
