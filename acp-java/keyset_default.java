@@ -23,6 +23,7 @@ class keyset_default implements keyset {
   // for integration test
   int offset;
   boolean useKeyRoop;
+  boolean keyFinished;
 
   public keyset_default(int num, String prefix, boolean useKeyRoop) {
     set = new String[num];
@@ -33,6 +34,7 @@ class keyset_default implements keyset {
     }
     this.offset = 0;
     this.useKeyRoop = useKeyRoop;
+    this.keyFinished = false;
     reset();
   }
 
@@ -47,12 +49,13 @@ class keyset_default implements keyset {
   }
 
   synchronized public String get_key() {
+    if (keyFinished) return null;
+
     int idx = next_idx++;
     if (next_idx >= set.length) {
-      if (useKeyRoop) {
-        next_idx = 0;
-      } else {
-        return null;
+      next_idx = 0;
+      if (useKeyRoop == false) {
+        keyFinished = true;
       }
     }
     return set[idx];

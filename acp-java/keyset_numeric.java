@@ -21,6 +21,7 @@ class keyset_numeric implements keyset {
   String[] set;
   int next_idx;
   boolean useKeyRoop;
+  boolean keyFinished;
 
   // Each key is simply base-10 integer in ASCII.
   // Each has 'len' digits.
@@ -39,6 +40,7 @@ class keyset_numeric implements keyset {
         set[i] = prefix + set[i];
     }
     this.useKeyRoop = useKeyRoop;
+    this.keyFinished = false;
     reset();
   }
 
@@ -51,12 +53,13 @@ class keyset_numeric implements keyset {
   }
 
   synchronized public String get_key() {
+    if (keyFinished) return null;
+
     int idx = next_idx++;
     if (next_idx >= set.length) {
-      if (useKeyRoop) {
-        next_idx = 0;
-      } else {
-        return null;
+      next_idx = 0;
+      if (useKeyRoop == false) {
+        keyFinished = true;
       }
     }
     return set[idx];
