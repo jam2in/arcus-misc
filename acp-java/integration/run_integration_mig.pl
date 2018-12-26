@@ -102,7 +102,7 @@ if ($flag eq -1 || $flag eq 1) {
         "client=30\n" .
         "rate=0\n" .
         "request=0\n" .
-        "time=100000\n" .
+        "time=-1\n" .
         "keyset_size=$keyset_size\n" .
         "valueset_min_size=20\n" .
         "valueset_max_size=20\n" .
