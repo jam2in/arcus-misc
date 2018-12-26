@@ -54,6 +54,7 @@ public class integration_rangesearch implements client_profile {
         return false;
       val = cli.vset.get_value();
       fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+      System.out.printf("set operation request. key = " + key + "\n");
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("set failed on rangesearch test. id=%d key=%s\n", cli.id, key);
