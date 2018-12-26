@@ -52,6 +52,7 @@ public class integration_repltest implements client_profile {
       do {
         try {
           fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+          System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
           ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
           System.out.println("this test should not occur with TimeoutException... retry set key : " + key);
@@ -79,6 +80,7 @@ public class integration_repltest implements client_profile {
       key = cli.ks.get_key();
       val = cli.vset.get_value();
       Future<byte[]> f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
+      System.out.printf("get operation request. key = " + key + "\n");
       val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
       if (val == null) {
