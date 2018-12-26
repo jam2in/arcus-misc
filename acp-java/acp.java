@@ -171,6 +171,18 @@ class acp {
     else if (conf.client_profile.equals("integration_repltest_noprint")) {
       profile = new integration_repltest_noprint();
     }
+    else if (conf.client_profile.equals("integration_repl_onlyset")) {
+      profile = new integration_repl_onlyset();
+    }
+    else if (conf.client_profile.equals("integration_repl_onlyset_noprint")) {
+      profile = new integration_repl_onlyset_noprint();
+    }
+    else if (conf.client_profile.equals("integration_repl_onlyget")) {
+      profile = new integration_repl_onlyget();
+    }
+    else if (conf.client_profile.equals("integration_repl_onlyget_noprint")) {
+      profile = new integration_repl_onlyget_noprint();
+    }
     else if (conf.client_profile.equals("integration_idc_onlyset")) {
       profile = new integration_idc_onlyset();
     }

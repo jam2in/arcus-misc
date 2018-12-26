@@ -129,14 +129,48 @@ if ($flag eq -1 || $flag eq 1) {
       "key_prefix=integrationtest:\n" .
       "client_exptime=0\n" .
       "client_timeout=3000\n" .
-      "client_profile=integration_repltest\n";
+      "client_profile=integration_repl_onlyset\n";
   close CONF;
 
   $cmd = "./run.bash -config tmp-integration-config.txt";
   printf "RUN COMMAND=%s\n", $cmd;
-
   local $SIG{TERM} = sub { print "TERM SIGNAL\n" };
   my $ret = system($cmd);
+  if ($ret ne 0) {
+    print "#########################\n";
+    print "TEST FAILED CODE=$ret >> replication operation in master node\n";
+    print "#########################\n";
+    exit(1);
+  }
+
+  sleep 5;
+
+  open CONF, ">tmp-integration-config.txt" or die $!;
+  print CONF
+      "zookeeper=$zk_ip:9181\n" .
+      "service_code=test_rp\n" .
+      #"single_server=" . $zk_ip . ":" . $t_port . "\n" .
+      "client=100\n" .
+      "rate=400\n" .
+      "request=0\n" .
+      "time=-1\n" .
+      "keyset_size=$keyset_size\n" .
+      "valueset_min_size=10\n" .
+      "valueset_max_size=30\n" .
+      "pool=5\n" .
+      "pool_size=30\n" .
+      "pool_use_random=false\n" .
+      "key_prefix=integrationtest:\n" .
+      "client_exptime=0\n" .
+      "client_timeout=3000\n" .
+      "client_profile=integration_repl_onlyget\n";
+  close CONF;
+
+  $cmd = "./run.bash -config tmp-integration-config.txt";
+  printf "RUN COMMAND=%s\n", $cmd;
+  local $SIG{TERM} = sub { print "TERM SIGNAL\n" };
+  my $ret = system($cmd);
+
   if ($ret ne 0) {
     print "#########################\n";
     print "TEST FAILED CODE=$ret >> replication operation in master node\n";
