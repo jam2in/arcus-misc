@@ -39,7 +39,7 @@ foreach $script (@script_list) {
     # Create a temporary config file to run the test
     my $time;
     if ($script eq "integration_onlyset") {
-      $time = 9999999;
+      $time = 700;
     } else {
       $time = 360;
     }
