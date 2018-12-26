@@ -18,7 +18,7 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class integration_repltest implements client_profile {
+public class integration_getset_ratio_noprint implements client_profile {
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -37,61 +37,50 @@ public class integration_repltest implements client_profile {
   }
 
   public boolean do_simple_test(client cli) throws Exception {
-    // for replication test
+    // All keyset entries must already be in cluster
+    // Please refer to integration_onlyset.java
+    // Do one set and <get_count> get.
+
     String key;
     byte[] val;
     Future<Boolean> fb;
-    boolean ok = false;
+    Future<byte[]> f;
+    boolean ok;
+    int ratio = cli.get_ratio();
 
-    // set as many keys as cli.conf.keyset_size
-    key = cli.ks.get_key();
-    if (key != null) {
+    long start = System.nanoTime();
+    long end;
+
+    if (ratio == 0) {
       if (!cli.before_request())
         return false;
+      // Pick a key
+      key = cli.ks.get_key();
       val = cli.vset.get_value();
-      do {
-        try {
-          fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
-          System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
-          //System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
-          ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-        } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
-          System.out.println("this test should not occur with TimeoutException... retry set key : " + key);
-          //System.out.println("this test should not occur with TimeoutException... increase client_timeout");
-          //System.exit(1);
-        } catch (Exception e) {
-          // master node down...
-          System.out.printf("master node down... 30 seconds waiting for switchover... cli_id=%d\n",cli.id);
-          System.out.println(e.toString());
-
-          // waiting sleep_count secondes....
-          int sleep_count = 33;
-          while (sleep_count > 0) {
-              Thread.sleep(1000);
-              sleep_count--;
-          }
-        }
-      } while (!ok);
+      fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+      ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
+      if (!ok) {
+        System.out.printf("integration test set failed. id=%d key=%s\n", cli.id, key);
+        System.exit(1);
+      }
       if (!cli.after_request(ok))
         return false;
     } else {
-      // get operation
       if (!cli.before_request())
         return false;
       key = cli.ks.get_key();
-      val = cli.vset.get_value();
-      Future<byte[]> f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
-      System.out.printf("get operation request. key = " + key + "\n");
-      //System.out.printf("get operation request. key = " + key + "\n");
+      f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
       val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
       if (val == null) {
-        System.out.printf("get failed. id=%d key=%s\n", cli.id, key);
+        System.out.printf("integration test get failed. id=%d key=%s\n", cli.id, key);
         System.exit(1);
       }
       if (!cli.after_request(true))
         return false;
     }
+    end = System.nanoTime();
+    cli.add_optime(end - start);
     return true;
   }
 }

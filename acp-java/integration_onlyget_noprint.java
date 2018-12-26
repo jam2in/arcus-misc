@@ -18,7 +18,7 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class integration_idc_onlyget implements client_profile {
+public class integration_onlyget_noprint implements client_profile {
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -40,45 +40,31 @@ public class integration_idc_onlyget implements client_profile {
     // Do one set and one get.  The same key.
 
     int get_try = 10;
-
-    String key;
-    byte[] val = null;
-
-    key = cli.ks.get_key();
-    if (key == null) {
-      cli.set_stop(true);
-      return true;
-    }
     if (!cli.before_request())
       return false;
+
+    String key = cli.ks.get_key();
+    byte[] val = cli.vset.get_value();
+
     do {
       try {
         Future<byte[]> f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
-        System.out.printf("get operation request. key = " + key + "\n");
-        //System.out.printf("get operation request. key = " + key + "\n");
         val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-        if (val == null) {
-          System.out.printf("idc onlyget test faile key miss : %s\n",key);
-          System.exit(1);
-        }
-        if (!cli.write_operation(key, val)) {
-          System.out.printf("idc onlyget test failed : file write occur exception.");
-          System.exit(1);
-        }
       } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
-        if (get_try-- > 0) {
-          System.out.printf("idc get failed. id=%d key=%s remain try count : %d\n",cli.id, key, get_try);
-          Thread.sleep(1000);
-        } else {
-          System.out.printf("idc get failed. id=%d key=%s get operation exceeded 10 times\n",cli.id, key);
-          System.exit(1);
-        }
+          if (get_try-- > 0) {
+              System.out.printf("get failed. id=%d key=%s remain try count : %d\n",cli.id, key, get_try);
+              Thread.sleep(1000);
+          } else {
+              System.out.printf("get failed. id=%d key=%s get operation exceeded 10 times\n",cli.id, key);
+              System.exit(1);
+          }
       } catch (Exception e) {
-        System.out.printf("idc get failed. id=%d key=%s\n",cli.id);
-        e.printStackTrace();
-        System.exit(1);
+          System.out.printf("get failed. id=%d key=%s\n",cli.id);
+          e.printStackTrace();
+          System.exit(1);
       }
     } while (val == null);
+
     if (!cli.after_request(true))
       return false;
 

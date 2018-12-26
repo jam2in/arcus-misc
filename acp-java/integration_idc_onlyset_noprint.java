@@ -18,7 +18,7 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class integration_idc_onlyget implements client_profile {
+public class integration_idc_onlyset_noprint implements client_profile {
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -39,11 +39,12 @@ public class integration_idc_onlyget implements client_profile {
   public boolean do_simple_test(client cli) throws Exception {
     // Do one set and one get.  The same key.
 
-    int get_try = 10;
-
+    // Pick a key
     String key;
-    byte[] val = null;
-
+    byte[] val;
+    Future<Boolean> fb;
+    boolean ok = false;
+    int tries = 10;
     key = cli.ks.get_key();
     if (key == null) {
       cli.set_stop(true);
@@ -51,37 +52,28 @@ public class integration_idc_onlyget implements client_profile {
     }
     if (!cli.before_request())
       return false;
+    val = cli.vset.get_value();
     do {
       try {
-        Future<byte[]> f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
-        System.out.printf("get operation request. key = " + key + "\n");
-        //System.out.printf("get operation request. key = " + key + "\n");
-        val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-        if (val == null) {
-          System.out.printf("idc onlyget test faile key miss : %s\n",key);
-          System.exit(1);
-        }
+        fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+        ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!cli.write_operation(key, val)) {
-          System.out.printf("idc onlyget test failed : file write occur exception.");
+          System.out.println("idc onlyset test failed : file write occur exception.");
           System.exit(1);
         }
       } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
-        if (get_try-- > 0) {
-          System.out.printf("idc get failed. id=%d key=%s remain try count : %d\n",cli.id, key, get_try);
-          Thread.sleep(1000);
-        } else {
-          System.out.printf("idc get failed. id=%d key=%s get operation exceeded 10 times\n",cli.id, key);
+        if (tries-- <= 0) {
+          System.out.println("test failed operationtimeout over 10 times");
           System.exit(1);
         }
+        System.out.println("this test should not occur with TimeoutException... retry set key : " + key);
       } catch (Exception e) {
-        System.out.printf("idc get failed. id=%d key=%s\n",cli.id);
-        e.printStackTrace();
-        System.exit(1);
+        System.out.println("retry set operation after 1 seconds");
+        Thread.sleep(1000);
       }
-    } while (val == null);
-    if (!cli.after_request(true))
+    } while (!ok);
+    if (!cli.after_request(ok))
       return false;
-
     return true;
   }
 }
