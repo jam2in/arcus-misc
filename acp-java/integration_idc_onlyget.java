@@ -74,7 +74,7 @@ public class integration_idc_onlyget implements client_profile {
           System.exit(1);
         }
       } catch (Exception e) {
-        System.out.printf("idc get failed. id=%d key=%s\n",cli.id);
+        System.out.printf("idc get failed. id=%d key=%s\n", cli.id, key);
         e.printStackTrace();
         System.exit(1);
       }
