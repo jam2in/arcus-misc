@@ -110,6 +110,7 @@ public class integration_map implements client_profile {
            new Long(cli.conf.ins_element_size),
            CollectionOverflowAction.error);
     colfb = cli.next_ac.asyncMopCreate(key, vtype, attr);
+    System.out.printf("mop create operation request. key = " + key + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -117,6 +118,7 @@ public class integration_map implements client_profile {
 
     //exists
     colfb = cli.next_ac.asyncMopCreate(key, vtype, attr);
+    System.out.printf("mop create operation request. key = " + key + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -129,6 +131,7 @@ public class integration_map implements client_profile {
     key = "mop_typemismatch_test";
     colfb = cli.next_ac.asyncMopInsert(key, mkey, val,
                                        null /* Do not auto-create item */);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -138,6 +141,7 @@ public class integration_map implements client_profile {
     key = "mop_insert_test";
     colfb = cli.next_ac.asyncMopInsert(key, mkey, val,
                                        null /* Do not auto-create item */);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -149,6 +153,7 @@ public class integration_map implements client_profile {
                                     CollectionOverflowAction.error);
     mkey += "1";
     colfb = cli.next_ac.asyncMopInsert(key, mkey, val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -156,6 +161,7 @@ public class integration_map implements client_profile {
 
     // element_exists
     colfb = cli.next_ac.asyncMopInsert(key, mkey, val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -164,6 +170,7 @@ public class integration_map implements client_profile {
     // stored
     mkey += "1";
     colfb = cli.next_ac.asyncMopInsert(key, mkey, val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -172,6 +179,7 @@ public class integration_map implements client_profile {
     // overflowed
     mkey += "1";
     colfb = cli.next_ac.asyncMopInsert(key, mkey, val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -184,6 +192,7 @@ public class integration_map implements client_profile {
     key = "mop_delete_test";
     mkey = "mkey1";
     colfb = cli.next_ac.asyncMopDelete(key, mkey, true /* dropIfEmpty */);
+    System.out.printf("mop delete operation request. key = " + key + ", mkey = " + mkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -191,6 +200,7 @@ public class integration_map implements client_profile {
 
     // not_found_element
     colfb = cli.next_ac.asyncMopDelete(key, mkey, true /* dropIfEmpty */);
+    System.out.printf("mop delete operation request. key = " + key + ", mkey = " + mkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -199,6 +209,7 @@ public class integration_map implements client_profile {
     // deleted_dropped
     mkey = "mkey2";
     colfb = cli.next_ac.asyncMopDelete(key, mkey, true /* dropIfEmpty */);
+    System.out.printf("mop delete operation request. key = " + key + ", mkey = " + mkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -206,6 +217,7 @@ public class integration_map implements client_profile {
 
     // not_found
     colfb = cli.next_ac.asyncMopDelete(key, mkey, true /* dropIfEmpty */);
+    System.out.printf("mop delete operation request. key = " + key + ", mkey = " + mkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -219,6 +231,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key
                                   , true /* withDelete */
                                   , true /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + "\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -229,6 +242,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key
                                   , true /* withDelete */
                                   , true /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + "\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -239,6 +253,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key
                                   , true /* withDelete */
                                   , true /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + "\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -249,6 +264,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key, "mkey0"
                                   , true /* withDelete */
                                   , true /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + ", mkey = mkey0\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -263,6 +279,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key, mkeyList
                                   , false /* withDelete */
                                   , false /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + ", mkey = mkey1 ~ 9\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -272,6 +289,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key, mkeyList
                                   , true /* withDelete */
                                   , true /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + ", mkey = mkey1 ~ 9\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -281,6 +299,7 @@ public class integration_map implements client_profile {
     colfm = cli.next_ac.asyncMopGet(key, "mkey10"
                                   , true /* withDelete */
                                   , true /* dropIfEmpty */);
+    System.out.printf("mop get operation request. key = " + key + ", mkey = mkey10\n");
     mapval = colfm.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfm.getOperationStatus().getResponse();
 
@@ -294,6 +313,7 @@ public class integration_map implements client_profile {
     mkey = "mkey1";
     val = cli.vset.get_value();
     colfb = cli.next_ac.asyncMopUpdate(key, mkey, val);
+    System.out.printf("mop update operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -303,6 +323,7 @@ public class integration_map implements client_profile {
     key = "mop_update_test1";
     mkey = "mkey2";
     colfb = cli.next_ac.asyncMopUpdate(key, mkey, "mvalue");
+    System.out.printf("mop update operation request. key = " + key + ", mkey = " + mkey + ", val = mvalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -311,6 +332,7 @@ public class integration_map implements client_profile {
     // updated
     mkey = "mkey1";
     colfb = cli.next_ac.asyncMopUpdate(key, mkey, "update_mvalue");
+    System.out.printf("mop update operation request. key = " + key + ", mkey = " + mkey + ", val = update_mvalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -319,6 +341,7 @@ public class integration_map implements client_profile {
     // typemismatch
     key = "mop_typemismatch_test";
     colfb = cli.next_ac.asyncMopUpdate(key, mkey, "update_mvalue");
+    System.out.printf("mop update operation request. key = " + key + ", mkey = " + mkey + ", val = update_mvalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -331,6 +354,7 @@ public class integration_map implements client_profile {
     key = "mop_typemismatch_test";
     val = cli.vset.get_value();
     simplefb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc); //typemismatch key insert(simple kv)
+    System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
     ok = simplefb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert ok : "sop_typemismatch_test failed, predicted STORED";
@@ -343,6 +367,7 @@ public class integration_map implements client_profile {
     for (int i = 1; i < 3 ; i++) { // mkey1 ~ mkey2
       val = cli.vset.get_value();
       colfb = cli.next_ac.asyncMopInsert(key, mkey+i, val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "sop_get_test failed, predicted STORED or CREATED_STORED\n";
     }
@@ -352,6 +377,7 @@ public class integration_map implements client_profile {
     for (int i = 1; i < 11 ; i++) { // mkey1 ~ mkey10
       val = cli.vset.get_value();
       colfb = cli.next_ac.asyncMopInsert(key, mkey+i, val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = " + mkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "sop_get_test failed, predicted STORED or CREATED_STORED\n";
     }
@@ -360,6 +386,7 @@ public class integration_map implements client_profile {
     key = "mop_unreadable";
     attr.setReadable(false);
     colfb = cli.next_ac.asyncMopInsert(key, "unreadable", val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = unreadable, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -369,6 +396,7 @@ public class integration_map implements client_profile {
     key = "mop_update_test1";
     attr.setReadable(true);
     colfb = cli.next_ac.asyncMopInsert(key, "mkey1", val, attr);
+    System.out.printf("mop insert operation request. key = " + key + ", mkey = mkey1, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 

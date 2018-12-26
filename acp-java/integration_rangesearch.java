@@ -82,6 +82,10 @@ public class integration_rangesearch implements client_profile {
         try {
           fl = cli.next_ac.asyncRangeGet(frkey, tokey, getcount);
           keylist = fl.get(5000, TimeUnit.MILLISECONDS);
+          System.out.printf("range get frkey = " + frkey + ", tokey = " + tokey + "\n");
+          for (int j = 0; j < keylist.size(); j++) {
+              System.out.printf("rget key[" + j + "] = " + keylist.get(j) + "\n");
+          }
           status = fl.getOperationStatus();
 
 //          if ((keylist.size() != (getcount + 1)) ||

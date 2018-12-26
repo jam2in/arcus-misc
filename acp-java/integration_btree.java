@@ -170,6 +170,7 @@ public class integration_btree implements client_profile {
                                     new Long(cli.conf.ins_element_size),
                                     CollectionOverflowAction.smallest_trim);
     colfb = cli.next_ac.asyncBopCreate(key, vtype, attr);
+    System.out.printf("bop create operation request. key = " + key + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -177,6 +178,7 @@ public class integration_btree implements client_profile {
 
     //exists
     colfb = cli.next_ac.asyncBopCreate(key, vtype, attr);
+    System.out.printf("bop create operation request. key = " + key + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -191,6 +193,7 @@ public class integration_btree implements client_profile {
     val = cli.vset.get_value();
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, null /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -201,6 +204,7 @@ public class integration_btree implements client_profile {
     bkey = 10L;
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, null /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -212,6 +216,7 @@ public class integration_btree implements client_profile {
                                     CollectionOverflowAction.error);
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -220,6 +225,7 @@ public class integration_btree implements client_profile {
     // element_exists
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -229,6 +235,7 @@ public class integration_btree implements client_profile {
     bkey = 20L;
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -238,6 +245,7 @@ public class integration_btree implements client_profile {
     bkey = 30L;
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -249,6 +257,7 @@ public class integration_btree implements client_profile {
     attr.setMaxCount(1);
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -257,6 +266,7 @@ public class integration_btree implements client_profile {
     bkey = 40L;
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr /* Do not auto-create item */);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -270,6 +280,7 @@ public class integration_btree implements client_profile {
     bkey = 10;
     colfb = cli.next_ac.asyncBopDelete(key, bkey, null /* eflag */,
                                       true /* dropIfEmpty */);
+    System.out.printf("bop delete operation request. key = " + key + ", bkey = " + bkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -280,6 +291,7 @@ public class integration_btree implements client_profile {
     bkey = 200;
     colfb = cli.next_ac.asyncBopDelete(key, bkey, null /* eflag */,
                                       true /* dropIfEmpty */);
+    System.out.printf("bop delete operation request. key = " + key + ", bkey = " + bkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -289,6 +301,7 @@ public class integration_btree implements client_profile {
     bkey = 20;
     colfb = cli.next_ac.asyncBopDelete(key, bkey, null /* eflag */,
                                       true /* dropIfEmpty */);
+    System.out.printf("bop delete operation request. key = " + key + ", bkey = " + bkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -298,6 +311,7 @@ public class integration_btree implements client_profile {
     bkey = 10;
     colfb = cli.next_ac.asyncBopDelete(key, bkey, null /* eflag */,
                                       true /* dropIfEmpty */);
+    System.out.printf("bop delete operation request. key = " + key + ", bkey = " + bkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -307,6 +321,7 @@ public class integration_btree implements client_profile {
     key = "bop_typemismatch_test";
     colfb = cli.next_ac.asyncBopDelete(key, bkey, null /* eflag */,
                                       true /* dropIfEmpty */);
+    System.out.printf("bop delete operation request. key = " + key + ", bkey = " + bkey + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -321,6 +336,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, bkey, filter
                                     , true /* withdelete */
                                     , true /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = " + bkey + "\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -331,6 +347,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, bkey, filter
                                     , true /* withdelete */
                                     , true /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = " + bkey + "\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -340,6 +357,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, 10, 100, filter, 0, 0
                                     , false /* withdelete */
                                     , false /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = 10 ~ 100\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -349,6 +367,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, 20, 100, filter, 0, 0
                                     , true /* withdelete */
                                     , true /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = 20 ~ 100\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -358,6 +377,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, 10, filter
                                     , true /* withdelete */
                                     , true /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = 10\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -368,6 +388,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, 10, filter
                                     , true /* withdelete */
                                     , true /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = 10\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -378,6 +399,7 @@ public class integration_btree implements client_profile {
     colfbtr = cli.next_ac.asyncBopGet(key, 10, filter
                                     , true /* withdelete */
                                     , true /* dropifempty */);
+    System.out.printf("bop get operation request. key = " + key + ", bkey = 10\n");
     btrval = colfbtr.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfbtr.getOperationStatus().getResponse();
 
@@ -390,6 +412,7 @@ public class integration_btree implements client_profile {
     key = "bop_update_test2";
     bkey = 100;
     colfb = cli.next_ac.asyncBopUpdate(key, bkey, null, "updatevalue");
+    System.out.printf("bop update operation request. key = " + key + ", bkey = " + bkey + ", val = updatevalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -399,6 +422,7 @@ public class integration_btree implements client_profile {
     key = "bop_update_test1";
     bkey = 30;
     colfb = cli.next_ac.asyncBopUpdate(key, bkey, null, "updatevalue");
+    System.out.printf("bop update operation request. key = " + key + ", bkey = " + bkey + ", val = updatevalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -407,6 +431,7 @@ public class integration_btree implements client_profile {
     // updated
     bkey = 20;
     colfb = cli.next_ac.asyncBopUpdate(key, bkey, null, "updatevalue");
+    System.out.printf("bop update operation request. key = " + key + ", bkey = " + bkey + ", val = updatevalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -415,6 +440,7 @@ public class integration_btree implements client_profile {
     // type_mismatch
     key = "bop_typemismatch_test";
     colfb = cli.next_ac.asyncBopUpdate(key, bkey, null, "updatevalue");
+    System.out.printf("bop update operation request. key = " + key + ", bkey = " + bkey + ", val = updatevalue\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -443,6 +469,7 @@ public class integration_btree implements client_profile {
     // count
     key = "bop_count_test1";
     colfi = cli.next_ac.asyncBopGetItemCount(key, 10, 100, ElementFlagFilter.DO_NOT_FILTER);
+    System.out.printf("bop count operation request. key = " + key + ", bkey = 10 ~ 100\n");
     count = colfi.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfi.getOperationStatus().getResponse();
 
@@ -465,12 +492,14 @@ public class integration_btree implements client_profile {
     key = "bop_arithmetic_test1";
     bkey = 10;
     colfl = cli.next_ac.asyncBopIncr(key, bkey, (int)1000);
+    System.out.printf("bop incr operation request. key = " + key + ", bkey = " + bkey + ", val = 1000\n");
     Long arithval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert arithval == 2000 : "bop_arithmetic_test(increase) failed, pridicted 2000";
  
     // decr
     colfl = cli.next_ac.asyncBopDecr(key, bkey, (int)1000);
+    System.out.printf("bop decr operation request. key = " + key + ", bkey = " + bkey + ", val = 1000\n");
     arithval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert arithval == 1000 : "bop_arithmetic_test(decrease) failed, pridicted 1000";
@@ -489,6 +518,7 @@ public class integration_btree implements client_profile {
     Map<String, BTreeGetResult<Long, Object>> result;
     colfmget = cli.next_ac.asyncBopGetBulk(keyList, 10, 20, ElementFlagFilter.DO_NOT_FILTER
                                          , 0 /* offset */, 10 /* count */);
+    System.out.printf("bop getbulk operation request. key = [bop_mget_test1, bop_mget_test2, bop_mget_test3, bop_mget_test4], bkey = 10 ~ 20\n");
     result = colfmget.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     if (result.size() <= 0) {
@@ -521,6 +551,7 @@ public class integration_btree implements client_profile {
     SMGetFuture<List<SMGetElement<Object>>> colfsmget;
     List<SMGetElement<Object>> result;
     colfsmget = cli.next_ac.asyncBopSortMergeGet(keyList, 40, 10, ElementFlagFilter.DO_NOT_FILTER, 10, smgetMode);
+    System.out.printf("bop smget operation request. key = [bop_smget_test1, bop_smget_test2, bop_smget_test3], bkey = 40 ~ 10\n");
     result = colfsmget.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     if (result.size() <= 0) {
@@ -556,12 +587,14 @@ public class integration_btree implements client_profile {
     key = "bop_position_test1";
     bkey = 50;
     colfi = cli.next_ac.asyncBopFindPosition(key, bkey, BTreeOrder.ASC);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = " + bkey + ", order = asc\n");
     position = colfi.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert position == 4 : "bop_position_test failed, pridicted position = 4";
 
     bkey = 70;
     colfi = cli.next_ac.asyncBopFindPosition(key, bkey, BTreeOrder.DESC);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = " + bkey + ", order = desc\n");
     position = colfi.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert position == 3 : "bop_position_test failed, pridicted position = 3";
@@ -574,6 +607,7 @@ public class integration_btree implements client_profile {
     Map<Integer,Element<Object>> result;
     key = "bop_pwg_test2";
     colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key, 40, BTreeOrder.ASC, 10/* pwgCount */);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = 40, order = asc, count = 10\n");
     result = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfpwg.getOperationStatus().getResponse();
 
@@ -582,6 +616,7 @@ public class integration_btree implements client_profile {
     // asc
     key = "bop_pwg_test1";
     colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key, 40, BTreeOrder.ASC, 10/* pwgCount */);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = 40, order = asc, count = 10\n");
     result = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfpwg.getOperationStatus().getResponse();
 
@@ -589,6 +624,7 @@ public class integration_btree implements client_profile {
 
     // desc
     colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key, 40, BTreeOrder.DESC, 10/* pwgCount */);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = 40, order = desc, count = 10\n");
     result = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfpwg.getOperationStatus().getResponse();
 
@@ -596,6 +632,7 @@ public class integration_btree implements client_profile {
 
     // not_found_element
     colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key, 99, BTreeOrder.DESC, 10/* pwgCount */);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = 99, order = desc, count = 10\n");
     result = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfpwg.getOperationStatus().getResponse();
 
@@ -604,6 +641,7 @@ public class integration_btree implements client_profile {
     // unreadable
     key = "bop_unreadable";
     colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key, 40, BTreeOrder.DESC, 10/* pwgCount */);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = 40, order = desc, count = 10\n");
     result = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfpwg.getOperationStatus().getResponse();
 
@@ -612,6 +650,7 @@ public class integration_btree implements client_profile {
     // type_mismatch
     key = "bop_typemismatch_test";
     colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key, 40, BTreeOrder.DESC, 10/* pwgCount */);
+    System.out.printf("bop position operation request. key = " + key + ", bkey = 40, order = desc, count = 10\n");
     result = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfpwg.getOperationStatus().getResponse();
 
@@ -625,6 +664,7 @@ public class integration_btree implements client_profile {
     Map<Integer,Element<Object>> result;
     key = "bop_gbp_test";
     colfgbp = cli.next_ac.asyncBopGetByPosition(key, BTreeOrder.ASC, 5 /* position */);
+    System.out.printf("bop getbyposition operation request. key = " + key + ", order = asc, count = 5\n");
     result = colfgbp.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfgbp.getOperationStatus().getResponse();
 
@@ -632,6 +672,7 @@ public class integration_btree implements client_profile {
 
     // desc
     colfgbp = cli.next_ac.asyncBopGetByPosition(key, BTreeOrder.DESC, 5 /* position */);
+    System.out.printf("bop getbyposition operation request. key = " + key + ", order = desc, count = 5\n");
     result = colfgbp.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfgbp.getOperationStatus().getResponse();
 
@@ -648,6 +689,7 @@ public class integration_btree implements client_profile {
     key = "bop_typemismatch_test";
     val = cli.vset.get_value();
     simplefb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc); //typemismatch key insert(simple kv)
+    System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
     ok = simplefb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert ok : "sop_typemismatch_test failed, predicted STORED";
@@ -662,6 +704,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_delete_test failed, predicted STORED or CREATED_STORED";
     }
@@ -672,6 +715,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_delete_test failed, predicted STORED or CREATED_STORED";
     }
@@ -681,6 +725,7 @@ public class integration_btree implements client_profile {
     attr.setReadable(false);
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
     attr.setReadable(true);
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
@@ -693,6 +738,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_update_test failed, predicted STORED or CREATED_STORED";
     }
@@ -703,6 +749,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_count_test failed, predicted STORED or CREATED_STORED";
     }
@@ -715,6 +762,7 @@ public class integration_btree implements client_profile {
     val = str.getBytes();
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -725,6 +773,7 @@ public class integration_btree implements client_profile {
     bkey = 10;
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -737,6 +786,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_mget_test failed, predicted STORED or CREATED_STORED";
     }
@@ -745,6 +795,7 @@ public class integration_btree implements client_profile {
     bkey = 40;
     colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                        val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -758,6 +809,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_smget_test failed, predicted STORED or CREATED_STORED";
     }
@@ -767,6 +819,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_smget_test failed, predicted STORED or CREATED_STORED";
     }
@@ -779,6 +832,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_position_test failed, predicted STORED or CREATED_STORED";
     }
@@ -789,6 +843,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_pwg_test1 failed, predicted STORED or CREATED_STORED";
     }
@@ -799,6 +854,7 @@ public class integration_btree implements client_profile {
       bkey = i;
       colfb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                          val, attr);
+    System.out.printf("bop insert operation request. key = " + key + ", bkey = " + bkey + ", val = " + val + "\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "bop_gbp_test failed, predicted STORED or CREATED_STORED";
     }

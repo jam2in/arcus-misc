@@ -103,6 +103,7 @@ public class integration_list implements client_profile {
                                     new Long(4000),
                                     CollectionOverflowAction.head_trim);
     colfb = cli.next_ac.asyncLopCreate(key, vtype, attr);
+    System.out.printf("lop create operation request. key = " + key + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -110,6 +111,7 @@ public class integration_list implements client_profile {
 
     // exists
     colfb = cli.next_ac.asyncLopCreate(key, vtype, attr); //exist key create
+    System.out.printf("lop create operation request. key = " + key + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -122,6 +124,7 @@ public class integration_list implements client_profile {
     key = "lop_typemismatch_test";
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val,
                                        null /* Do not auto-create item */);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -131,6 +134,7 @@ public class integration_list implements client_profile {
     key = "lop_insert_test";
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val,
                                        null /* Do not auto-create item */);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -141,6 +145,7 @@ public class integration_list implements client_profile {
                                     new Long(2),
                                     CollectionOverflowAction.error);
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val, attr);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -149,6 +154,7 @@ public class integration_list implements client_profile {
     // stored
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val,
                                        null /* Do not auto-create item */);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -157,6 +163,7 @@ public class integration_list implements client_profile {
     // overflow
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val,
                                        null /* Do not auto-create item */);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1, val = " + val + "\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -168,6 +175,7 @@ public class integration_list implements client_profile {
     // not_found_element
     key = "lop_delete_test1";
     colfb = cli.next_ac.asyncLopDelete(key, 3, true /* dropIfEmpty */);
+    System.out.printf("lop delete operation request. key = " + key + ", index = 3\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -176,6 +184,7 @@ public class integration_list implements client_profile {
     // not_found
     key = "lop_delete_test2";
     colfb = cli.next_ac.asyncLopDelete(key, -1, true /* dropIfEmpty */);
+    System.out.printf("lop delete operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -184,6 +193,7 @@ public class integration_list implements client_profile {
     // type_mismatch
     key = "lop_typemismatch_test";
     colfb = cli.next_ac.asyncLopDelete(key, -1, true /* dropIfEmpty */);
+    System.out.printf("lop delete operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -192,6 +202,7 @@ public class integration_list implements client_profile {
     // deleted
     key = "lop_delete_test1";
     colfb = cli.next_ac.asyncLopDelete(key, -1, true /* dropIfEmpty */);
+    System.out.printf("lop delete operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -200,6 +211,7 @@ public class integration_list implements client_profile {
     // deleted_dropped
     key = "lop_delete_test1";
     colfb = cli.next_ac.asyncLopDelete(key, -1, true /* dropIfEmpty */);
+    System.out.printf("lop delete operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -212,6 +224,7 @@ public class integration_list implements client_profile {
     key = "lop_get_test2";
     colfl = cli.next_ac.asyncLopGet(key, 0, true /* withDelete */, 
                                     true /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 0\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -221,6 +234,7 @@ public class integration_list implements client_profile {
     key = "lop_get_test1";
     colfl = cli.next_ac.asyncLopGet(key, 10, 11, true /* withDelete */, 
                                     true /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 10 ~ 11\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -229,6 +243,7 @@ public class integration_list implements client_profile {
     // end
     colfl = cli.next_ac.asyncLopGet(key, 0, 9, false /* withDelete */, 
                                     false /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 0 ~ 9\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -237,6 +252,7 @@ public class integration_list implements client_profile {
     // deleted
     colfl = cli.next_ac.asyncLopGet(key, 0, 8, true /* withDelete */, 
                                     true /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 0 ~ 8\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -245,6 +261,7 @@ public class integration_list implements client_profile {
     // deleted_dropped
     colfl = cli.next_ac.asyncLopGet(key, 0, true /* withDelete */, 
                                     true /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 0\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -254,6 +271,7 @@ public class integration_list implements client_profile {
     key = "lop_unreadable";
     colfl = cli.next_ac.asyncLopGet(key, 0, true /* withDelete */, 
                                     true /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 0\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -263,6 +281,7 @@ public class integration_list implements client_profile {
     key = "lop_typemismatch_test";
     colfl = cli.next_ac.asyncLopGet(key, 0, true /* withDelete */, 
                                     true /* dropIfEmpty */);
+    System.out.printf("lop get operation request. key = " + key + ", index = 0\n");
     listval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfl.getOperationStatus().getResponse();
 
@@ -274,6 +293,7 @@ public class integration_list implements client_profile {
     key = "lop_typemismatch_test";
     val = cli.vset.get_value();
     simplefb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+    System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
     ok = simplefb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     assert ok : "lop_typemismatch_test failed, predicted STORED\n"
@@ -285,12 +305,14 @@ public class integration_list implements client_profile {
                                     new Long(4000),
                                     CollectionOverflowAction.tail_trim);
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val, attr);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
     check_response(response, CollectionResponse.CREATED_STORED, key);
 
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val, attr);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
@@ -300,6 +322,7 @@ public class integration_list implements client_profile {
     key = "lop_get_test1";
     for (int i = 0; i < 10; i++) {
       colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val, attr);
+      System.out.printf("lop insert operation request. key = " + key + ", index = -1\n");
       ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       assert ok : "lop_get_test failed, predicted STORED or CREATED_STORED\n";
     }
@@ -308,6 +331,7 @@ public class integration_list implements client_profile {
     key = "lop_unreadable";
     attr.setReadable(false);
     colfb = cli.next_ac.asyncLopInsert(key, -1 /* tail */, val, attr);
+    System.out.printf("lop insert operation request. key = " + key + ", index = -1\n");
     ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     response = colfb.getOperationStatus().getResponse();
 
