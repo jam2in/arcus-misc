@@ -18,7 +18,10 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import java.util.logging.Logger;
+
 public class integration_idc_onlyset implements client_profile {
+  private final static Logger LOGGER = Logger.getLogger("net.spy.memcached");
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -56,7 +59,8 @@ public class integration_idc_onlyset implements client_profile {
     do {
       try {
         fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
-        System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
+        LOGGER.info("set operation request. key = " + key + ", val = " + val + "\n");
+        //System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
         ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!cli.write_operation(key, val)) {
           System.out.println("idc onlyset test failed : file write occur exception.");

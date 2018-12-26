@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import net.spy.memcached.collection.BTreeGetResult;
 import net.spy.memcached.collection.ByteArrayBKey;
@@ -45,7 +46,7 @@ import net.spy.memcached.ops.CollectionOperationStatus;
 // Port of arcus1.6.2-integration.py
 
 public class integration_arcus implements client_profile {
-
+  private final static Logger LOGGER = Logger.getLogger("net.spy.memcached");
   public integration_arcus() {
     int next_val_idx = 0;
     chunk_values = new String[chunk_sizes.length+1];
@@ -112,6 +113,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     Future<Boolean> f = cli.next_ac.delete(key);
+    LOGGER.info("delete operation request. key = " + key + "\n");
     boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     // DELETED || NOT_FOLUND
     if (!cli.after_request(ok))
@@ -160,6 +162,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fb = cli.next_ac.add(key, cli.conf.client_exptime, val);
+    LOGGER.info("add operation request. key = " + key + ", val = " + val + "\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: add failed. predicted STORED. id=%d key=%s\n"
@@ -167,6 +170,7 @@ public class integration_arcus implements client_profile {
       System.exit(1);
     }
     fb = cli.next_ac.add(key, cli.conf.client_exptime, val);
+    LOGGER.info("add operation request. key = " + key + ", val = " + val + "\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (ok) {
       System.out.printf("KeyValue: add failed. predicted NOT_STORED. id=%d key=%s\n"
@@ -180,6 +184,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
         return false;
     fb = cli.next_ac.replace(key, cli.conf.client_exptime, "jam2in"); //replace value
+    LOGGER.info("replace operation request. key = " + key + ", val = jam2in\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: replace failed. predicted STORED. id=%d key=%s\n"
@@ -192,6 +197,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
         return false;
     fbyte = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc); //confirm replace value
+    LOGGER.info("get operation request. key = " + key + "\n");
     val = fbyte.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
     if (!"jam2in".equals(new String(val, "UTF-8"))) {
@@ -208,6 +214,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fb = cli.next_ac.set(key, cli.conf.client_exptime, "arcus"); //set prepend key
+    LOGGER.info("set operation request. key = " + key + ", val = arcus\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: prepend failed. predicted STORED. id=%d key=%s\n"
@@ -219,6 +226,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fb = cli.next_ac.prepend(not_used, key, "jam2in"); //prepend value
+    LOGGER.info("prepend operation request. key = " + key + ", val = jam2in\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: jam2in prepend failed. predicted STORED. id=%d key=%s\n"
@@ -230,6 +238,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fbyte = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc); //confirm prepend value
+    LOGGER.info("get operation request. key = " + key + "\n");
     val = fbyte.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!"jam2inarcus".equals(new String(val, "UTF-8"))) {
       System.out.printf("KeyValue: jam2in prepend failed. predicted jam2inarcus. id=%d key=%s\n"
@@ -245,6 +254,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fb = cli.next_ac.set(key, cli.conf.client_exptime, "arcus"); //set prepend key
+    LOGGER.info("set operation request. key = " + key + ", val = arcus\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: append failed. predicted STORED. id=%d key=%s\n"
@@ -256,6 +266,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fb = cli.next_ac.append(not_used, key, "jam2in"); //append value
+    LOGGER.info("append operation request. key = " + key + ", val = jam2in\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: jam2in append failed. predicted STORED. id=%d key=%s\n"
@@ -267,6 +278,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fbyte = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc); //confirm prepend value
+    LOGGER.info("get operation request. key = " + key + "\n");
     val = fbyte.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!"arcusjam2in".equals(new String(val, "UTF-8"))) {
       System.out.printf("KeyValue: jam2in append failed. predicted arcusjam2in. id=%d key=%s\n"
@@ -281,6 +293,7 @@ public class integration_arcus implements client_profile {
     if (!cli.before_request())
       return false;
     fb = cli.next_ac.set(key, cli.conf.client_exptime, workloads);
+    LOGGER.info("set operation request. key = " + key + ", val = " + workloads + "\n");
     ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("KeyValue: set failed. id=%d key=%s\n", cli.id, key);
@@ -294,6 +307,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       Future<Object> fs = cli.next_ac.asyncGet(key);
+      LOGGER.info("get operation request. key = " + key + "\n");
       String s = (String)fs.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       ok = true;
       if (s == null) {
@@ -310,6 +324,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       fb = cli.next_ac.delete(key);
+      LOGGER.info("delete operation request. key = " + key + "\n");
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("KeyValue: delete failed. id=%d key=%s\n", 
@@ -325,6 +340,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       fb = cli.next_ac.set(key + "numeric", cli.conf.client_exptime, "1");
+      LOGGER.info("set operation request. key = " + key + "numeric, value = 1\n");
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("KeyValue: set numeric failed. id=%d key=%s\n",
@@ -336,6 +352,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       Future<Long> fl = cli.next_ac.asyncIncr(key + "numeric", 1);
+      LOGGER.info("incr operation request. key = " + key + "numeric, value = 1\n");
       Long lv = fl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       // The returned value is the result of increment.
       ok = true;
@@ -355,6 +372,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       fb = cli.next_ac.set(key + "numeric", cli.conf.client_exptime, "1");
+      LOGGER.info("set operation request. key = " + key + "numeric, value = 1\n");
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("KeyValue: set numeric failed. id=%d key=%s\n",
@@ -366,6 +384,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       Future<Long> fl = cli.next_ac.asyncDecr(key + "numeric", 1);
+      LOGGER.info("decr operation request. key = " + key + "numeric, value = 1\n");
       Long lv = fl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       // The returned value is the result of decrement.
       ok = true;
@@ -453,6 +472,7 @@ public class integration_arcus implements client_profile {
         CollectionFuture<Boolean> f = cli.next_ac.
           asyncBopInsert(key_list.get(j), bkey, eflag, 
                          workloads[random.nextInt(workloads.length)], attr);
+        LOGGER.info("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = workloads[random.nextInt(workloads.length)]\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_Btree: BopInsert failed." +
@@ -478,6 +498,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
         cli.next_ac.asyncBopPipedInsertBulk(key_list.get(0), elements,
                                             attr);
+      LOGGER.info("bop piped insert operation request. key = " + key_list.get(0) + "\n");
       Map<Integer, CollectionOperationStatus> status_map = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       Iterator<CollectionOperationStatus> status_iter = 
@@ -509,6 +530,7 @@ public class integration_arcus implements client_profile {
                                 0, random.nextInt(30) + 20,
                                 /* random.randint(20, 50) */
                                 false, false);
+      LOGGER.info("bop get operation request. key = " + key_list.get(j) + ", bkey = " + bkey + " ~ " + bkey_to + "\n");
       Map<ByteArrayBKey, Element<Object>> val = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
@@ -534,6 +556,7 @@ public class integration_arcus implements client_profile {
         cli.next_ac.asyncBopGetBulk(key_list, bkey, bkey_to, filter, 0,
                                     random.nextInt(30) + 20
                                     /* random.randint(20, 50) */);
+      LOGGER.info("bop getBulk operation request. keys = " + key_list.get(0) + ", bkey = " + bkey + " ~ " + bkey_to + "\n");
       Map<String, BTreeGetResult<ByteArrayBKey, Object>> val = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
@@ -556,6 +579,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Boolean> f = 
         cli.next_ac.asyncBopCreate(key, ElementValueType.STRING, 
                                    attr);
+      LOGGER.info("bop create operation request. key = " + key + "\n");
       boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("Collection_Btree: BopCreate failed." +
@@ -580,6 +604,7 @@ public class integration_arcus implements client_profile {
                                          filter, 0, 
                                          random.nextInt(30) + 20
                                          /* random.randint(20, 50) */);
+      LOGGER.info("bop smget operation request. keys = " + key_list.get(0) + ", bkey = " + bkey + " ~ " + bkey_to + "\n");
       List<SMGetElement<Object>> val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
         System.out.printf("Collection_Btree: BopSortMergeGet failed." +
@@ -607,6 +632,7 @@ public class integration_arcus implements client_profile {
         byte[] bkey = bk.getBytes();
         CollectionFuture<Boolean> f = 
           cli.next_ac.asyncBopUpdate(key0, bkey, bitop, value);
+        LOGGER.info("bop update operation request. key = " + key0 + ", bkey = " + bkey + ", value = " + value + "\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_Btree: BopUpdate failed." +
@@ -643,6 +669,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       CollectionFuture<Integer> colfi = cli.next_ac.asyncBopFindPosition(key0, bkey, BTreeOrder.ASC);
+      LOGGER.info("bop findPosition operation request. key = " + key0 + ", bkey = " + bkey + ", order = asc\n");
       int position = colfi.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (position != 25) {
         System.out.printf("Collection_Btree: BopFindPosition failed." +
@@ -663,6 +690,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       colfgbp = cli.next_ac.asyncBopGetByPosition(key1, BTreeOrder.ASC, 5);
+      LOGGER.info("bop getByPosition operation request. key = " + key1 + ", order = asc\n");
       resultgbp = colfgbp.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       response = colfgbp.getOperationStatus().getResponse();
       if (!response.equals(CollectionResponse.END)) {
@@ -685,6 +713,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       colfpwg = cli.next_ac.asyncBopFindPositionWithGet(key2, bkey, BTreeOrder.ASC, 10/* pwgCount */);
+      LOGGER.info("bop positionWithGet operation request. key = " + key2 + ", bkey = " + bkey + ", order = asc\n");
       resultpwg = colfpwg.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       response = colfpwg.getOperationStatus().getResponse();
       if (!response.equals(CollectionResponse.END)) {
@@ -706,6 +735,7 @@ public class integration_arcus implements client_profile {
         return false;
       CollectionFuture<Boolean> fb = cli.next_ac.asyncBopInsert(key, bkey, null /* eflag(optional)*/,
                                      3000, attr);
+      LOGGER.info("bop insert operation request. key = " + key + ", bkey = " + bkey + ", value = 3000\n");
       boolean ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("Collection_Btree: BopUpsert insertdata failed." +
@@ -720,6 +750,7 @@ public class integration_arcus implements client_profile {
       String str = String.format("%d", 1000);
       byte[] val = str.getBytes();
       fb = cli.next_ac.asyncBopUpsert(key, bkey, null, val, attr);
+      LOGGER.info("bop upsert operation request. key = " + key + ", bkey = " + bkey + ", value = " + val + "\n");
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("Collection_Btree: BopUpsert failed." +
@@ -734,6 +765,7 @@ public class integration_arcus implements client_profile {
         return false;
       CollectionFuture<Long> colfl =
           cli.next_ac.asyncBopIncr(key, bkey, (int)6777);
+      LOGGER.info("bop incr operation request. key = " + key + ", bkey = " + bkey + ", value = 6777\n");
       Long arithval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (arithval != 7777) {
         System.out.printf("Collection_Btree: BopIncr failed." +
@@ -746,6 +778,7 @@ public class integration_arcus implements client_profile {
       if (!cli.before_request())
         return false;
       colfl = cli.next_ac.asyncBopDecr(key, bkey, (int)5555);
+      LOGGER.info("bop decr operation request. key = " + key + ", bkey = " + bkey + ", value = 5555\n");
       arithval = colfl.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (arithval != 2222) {
         System.out.printf("Collection_Btree: BopDecr failed." +
@@ -759,6 +792,7 @@ public class integration_arcus implements client_profile {
         return false;
       CollectionFuture<Integer> colfi =
           cli.next_ac.asyncBopGetItemCount(key, 30, 100, ElementFlagFilter.DO_NOT_FILTER);;
+      LOGGER.info("bop count operation request. key = " + key + ", bkey = 30 ~ 100\n");
       int count = colfi.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (count != 1) {
         System.out.printf("Collection_Btree: BopGetItemCount failed." +
@@ -782,6 +816,7 @@ public class integration_arcus implements client_profile {
         CollectionFuture<Boolean> f = 
           cli.next_ac.asyncBopDelete(key_list.get(j), bkey, bkey_to, filter,
                                      0, false);
+      LOGGER.info("bop delete operation request. key = " + key_list.get(j) + ", bkey = " + bkey + " ~ " + bkey_to + "\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_Btree: BopDelete failed." +
@@ -827,6 +862,7 @@ public class integration_arcus implements client_profile {
         CollectionFuture<Boolean> f = cli.next_ac.
                 asyncMopInsert(key_list.get(j), mkey,
                         workloads[random.nextInt(workloads.length)], attr);
+      LOGGER.info("mop insert operation request. key = " + key_list.get(j) + ", mkey = " + mkey + ", value = workloads[random.nextInt(workloads.length)]\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_Map: MopInsert failed." +
@@ -852,6 +888,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
               cli.next_ac.asyncMopPipedInsertBulk(key_list.get(0), elements,
                       attr);
+      LOGGER.info("mop pipedInsertBulk operation request. keys = " + key_list.get(0) + "\n");
       Map<Integer, CollectionOperationStatus> status_map =
               f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       Iterator<CollectionOperationStatus> status_iter =
@@ -876,6 +913,7 @@ public class integration_arcus implements client_profile {
         return false;
       CollectionFuture<Map<String, Object>> f =
               cli.next_ac.asyncMopGet(key_list.get(0), false, false);
+      LOGGER.info("mop get operation request. key = " + key_list.get(0) + "\n");
       Map<String, Object> val =
               f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() != 100) {
@@ -895,6 +933,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Boolean> f =
               cli.next_ac.asyncMopCreate(key, ElementValueType.STRING,
                       attr);
+      LOGGER.info("mop create operation request. key = " + key + "\n");
       boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("Collection_Map: MopCreate failed." +
@@ -916,6 +955,7 @@ public class integration_arcus implements client_profile {
         String mkey = mkeyBASE + "0" + Integer.toString(i);
         CollectionFuture<Boolean> f =
                 cli.next_ac.asyncMopUpdate(key0, mkey, value);
+        LOGGER.info("mop update operation request. key = " + key0 + ", mkey = " + mkey + ", value = " + value + "\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_Map: MopUpdate failed." +
@@ -954,6 +994,7 @@ public class integration_arcus implements client_profile {
         String mkey = mkeyBASE + Integer.toString(j) + Integer.toString(i);
         CollectionFuture<Boolean> f = cli.next_ac.
                 asyncMopDelete(key_list.get(j), mkey, true);
+        LOGGER.info("mop delete operation request. key = " + key_list.get(j) + ", mkey = " + mkey + "\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_Map: MopDelete failed." +
@@ -996,6 +1037,7 @@ public class integration_arcus implements client_profile {
           String set_value = workloads[i] + Integer.toString(j);
           CollectionFuture<Boolean> f = 
             cli.next_ac.asyncSopInsert(key_list.get(i), set_value, attr);
+          LOGGER.info("sop insert operation request. key = " + key_list.get(i) + ", value = " + set_value + "\n");
           boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (!ok) {
             System.out.printf("Collection_Set: SopInsert failed." +
@@ -1015,7 +1057,8 @@ public class integration_arcus implements client_profile {
         return false;
       CollectionFuture<Set<Object>> colfs =
           cli.next_ac.asyncSopGet(key_list.get(0), cli.conf.act_element_size
-                                , false, false);;
+                                , false, false);
+      LOGGER.info("sop get operation request. key = " + key_list.get(0) + "\n");
       Set<Object> setval = colfs.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       CollectionResponse response = colfs.getOperationStatus().getResponse();
       if (!response.equals(CollectionResponse.END) || setval.size() <= 0) {
@@ -1039,6 +1082,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
         cli.next_ac.asyncSopPipedInsertBulk(key_list.get(0), elements, 
                                             attr);
+      LOGGER.info("sop pipedInsertBulk operation request. keys = " + key_list.get(0) + "\n");
       Map<Integer, CollectionOperationStatus> status_map = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       Iterator<CollectionOperationStatus> status_iter = 
@@ -1064,6 +1108,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Boolean> f = 
         cli.next_ac.asyncSopCreate(key, ElementValueType.STRING, 
                                    attr);
+      LOGGER.info("sop create operation request. key = " + key + "\n");
       boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("Collection_Set: SopCreate failed." +
@@ -1085,6 +1130,7 @@ public class integration_arcus implements client_profile {
           list_value.add(workloads[i] + Integer.toString(j));
           CollectionFuture<Map<Object, Boolean>> f = 
             cli.next_ac.asyncSopPipedExistBulk(key_list.get(i), list_value);
+          LOGGER.info("sop pipedExistBulk operation request. key = " + key_list.get(i) + "\n");
           Map<Object, Boolean> result_map =
             f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (result_map == null || result_map.size() != list_value.size()) {
@@ -1127,6 +1173,7 @@ public class integration_arcus implements client_profile {
           String del_value = workloads[i] + Integer.toString(j);
           CollectionFuture<Boolean> f = 
             cli.next_ac.asyncSopDelete(key_list.get(i), del_value, true);
+          LOGGER.info("sop delete operation request. key = " + key_list.get(i) + ", value = " + del_value + "\n");
           boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (!ok) {
             System.out.printf("Collection_Set: SopDelete failed." +
@@ -1170,6 +1217,7 @@ public class integration_arcus implements client_profile {
           CollectionFuture<Boolean> f = cli.next_ac
             .asyncLopInsert(key_list.get(i), index, 
                             workloads[random.nextInt(workloads.length)], attr);
+          LOGGER.info("lop insert operation request. key = " + key_list.get(i) + ", index = " + index + ", value = workloads[random.nextInt(workloads.length)]\n");
           boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (!ok) {
             System.out.printf("Collection_List: LopInsert failed." +
@@ -1194,6 +1242,7 @@ public class integration_arcus implements client_profile {
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
         cli.next_ac.asyncLopPipedInsertBulk(key_list.get(0), -1, elements, 
                                             attr);
+      LOGGER.info("lop pipedInsertBulk operation request. key = " + key_list.get(0) + ", index = -1\n");
       Map<Integer, CollectionOperationStatus> status_map = 
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       Iterator<CollectionOperationStatus> status_iter = 
@@ -1223,6 +1272,7 @@ public class integration_arcus implements client_profile {
         CollectionFuture<List<Object>> f =
           cli.next_ac.asyncLopGet(key_list.get(i), index, index_to, 
                                   false, false);
+      LOGGER.info("lop get operation request. key = " + key_list.get(i) + ", index = " + index + " ~ " + index_to + "\n");
         List<Object> val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (val == null || val.size() <= 0) {
           System.out.printf("Collection_List: LopGet failed." +
@@ -1262,6 +1312,7 @@ public class integration_arcus implements client_profile {
           return false;
         CollectionFuture<Boolean> f = 
           cli.next_ac.asyncLopDelete(key_list.get(i), index, index_to, true);
+      LOGGER.info("lop delete operation request. key = " + key_list.get(i) + ", index = " + index + " ~ " + index_to + "\n");
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
           System.out.printf("Collection_List: LopDelete failed." +
@@ -1283,6 +1334,7 @@ public class integration_arcus implements client_profile {
         return false;
       CollectionFuture<Boolean> colfb =
         cli.next_ac.asyncLopCreate(key, ElementValueType.BYTEARRAY, attr);
+      LOGGER.info("lop create operation request. key = " + key + "\n");
       boolean ok = colfb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       response = colfb.getOperationStatus().getResponse();
       if (!response.equals(CollectionResponse.CREATED)) {

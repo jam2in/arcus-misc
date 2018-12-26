@@ -18,7 +18,10 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import java.util.logging.Logger;
+
 public class integration_onlyget implements client_profile {
+  private final static Logger LOGGER = Logger.getLogger("net.spy.memcached");
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -49,7 +52,8 @@ public class integration_onlyget implements client_profile {
     do {
       try {
         Future<byte[]> f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
-        System.out.printf("get operation request. key = " + key + "\n");
+        LOGGER.info("get operation request. key = " + key + "\n");
+        //System.out.printf("get operation request. key = " + key + "\n");
         val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
           if (get_try-- > 0) {
