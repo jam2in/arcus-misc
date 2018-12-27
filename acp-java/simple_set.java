@@ -42,6 +42,7 @@ public class simple_set implements client_profile {
     byte[] val = cli.conf.zookeeper.getBytes();
     Future<Boolean> fb =
       cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+    System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
     boolean ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (!ok) {
       System.out.printf("set failed. id=%d key=%s\n", cli.id, key);
