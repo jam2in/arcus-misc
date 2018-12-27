@@ -44,6 +44,10 @@ public class integration_onlyget_noprint implements client_profile {
       return false;
 
     String key = cli.ks.get_key();
+    if (key == null) {
+      cli.set_stop(true);
+      return true;
+    }
     byte[] val = cli.vset.get_value();
 
     do {
