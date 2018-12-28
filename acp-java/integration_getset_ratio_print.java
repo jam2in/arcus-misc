@@ -18,7 +18,7 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class integration_getset_ratio_noprint implements client_profile {
+public class integration_getset_ratio_print implements client_profile {
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -58,6 +58,8 @@ public class integration_getset_ratio_noprint implements client_profile {
       key = cli.ks.get_key();
       val = cli.vset.get_value();
       fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+      System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
+      //System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
       ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
         System.out.printf("integration test set failed. id=%d key=%s\n", cli.id, key);
@@ -70,6 +72,8 @@ public class integration_getset_ratio_noprint implements client_profile {
         return false;
       key = cli.ks.get_key();
       f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
+      System.out.printf("get operation request. key = " + key + "\n");
+      //System.out.printf("get operation request. key = " + key + "\n");
       val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
 
       if (val == null) {

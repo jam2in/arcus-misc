@@ -150,50 +150,50 @@ class acp {
     else if (conf.client_profile.equals("integration_onlyset")) {
       profile = new integration_onlyset();
     }
-    else if (conf.client_profile.equals("integration_onlyset_noprint")) {
-      profile = new integration_onlyset_noprint();
+    else if (conf.client_profile.equals("integration_onlyset_print")) {
+      profile = new integration_onlyset_print();
     }
     else if (conf.client_profile.equals("integration_onlyget")) {
       profile = new integration_onlyget();
     }
-    else if (conf.client_profile.equals("integration_onlyget_noprint")) {
-      profile = new integration_onlyget_noprint();
+    else if (conf.client_profile.equals("integration_onlyget_print")) {
+      profile = new integration_onlyget_print();
     }
     else if (conf.client_profile.equals("integration_getset_ratio")) {
       profile = new integration_getset_ratio();
     }
-    else if (conf.client_profile.equals("integration_getset_ratio_noprint")) {
-      profile = new integration_getset_ratio_noprint();
+    else if (conf.client_profile.equals("integration_getset_ratio_print")) {
+      profile = new integration_getset_ratio_print();
     }
     else if (conf.client_profile.equals("integration_repltest")) {
       profile = new integration_repltest();
     }
-    else if (conf.client_profile.equals("integration_repltest_noprint")) {
-      profile = new integration_repltest_noprint();
+    else if (conf.client_profile.equals("integration_repltest_print")) {
+      profile = new integration_repltest_print();
     }
     else if (conf.client_profile.equals("integration_repl_onlyset")) {
       profile = new integration_repl_onlyset();
     }
-    else if (conf.client_profile.equals("integration_repl_onlyset_noprint")) {
-      profile = new integration_repl_onlyset_noprint();
+    else if (conf.client_profile.equals("integration_repl_onlyset_print")) {
+      profile = new integration_repl_onlyset_print();
     }
     else if (conf.client_profile.equals("integration_repl_onlyget")) {
       profile = new integration_repl_onlyget();
     }
-    else if (conf.client_profile.equals("integration_repl_onlyget_noprint")) {
-      profile = new integration_repl_onlyget_noprint();
+    else if (conf.client_profile.equals("integration_repl_onlyget_print")) {
+      profile = new integration_repl_onlyget_print();
     }
     else if (conf.client_profile.equals("integration_idc_onlyset")) {
       profile = new integration_idc_onlyset();
     }
-    else if (conf.client_profile.equals("integration_idc_onlyset_noprint")) {
-      profile = new integration_idc_onlyset_noprint();
+    else if (conf.client_profile.equals("integration_idc_onlyset_print")) {
+      profile = new integration_idc_onlyset_print();
     }
     else if (conf.client_profile.equals("integration_idc_onlyget")) {
       profile = new integration_idc_onlyget();
     }
-    else if (conf.client_profile.equals("integration_idc_onlyget_noprint")) {
-      profile = new integration_idc_onlyget_noprint();
+    else if (conf.client_profile.equals("integration_idc_onlyget_print")) {
+      profile = new integration_idc_onlyget_print();
     }
     else if (conf.client_profile.equals("integration_recovery_onlyset")) {
       profile = new integration_recovery_onlyset();
@@ -207,8 +207,8 @@ class acp {
     else if (conf.client_profile.equals("integration_arcus")) {
       profile = new integration_arcus();
     }
-    else if (conf.client_profile.equals("integration_arcus_noprint")) {
-      profile = new integration_arcus_noprint();
+    else if (conf.client_profile.equals("integration_arcus_print")) {
+      profile = new integration_arcus_print();
     }
     //end arcus integration test
     else if (conf.client_profile.equals("torture_btree")) {

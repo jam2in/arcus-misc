@@ -18,7 +18,7 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class integration_idc_onlyset_noprint implements client_profile {
+public class integration_repl_onlyget_print implements client_profile {
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -39,12 +39,11 @@ public class integration_idc_onlyset_noprint implements client_profile {
   public boolean do_simple_test(client cli) throws Exception {
     // Do one set and one get.  The same key.
 
-    // Pick a key
+    int get_try = 10;
+
     String key;
-    byte[] val;
-    Future<Boolean> fb;
-    boolean ok = false;
-    int tries = 10;
+    byte[] val = null;
+
     key = cli.ks.get_key();
     if (key == null) {
       cli.set_stop(true);
@@ -52,28 +51,33 @@ public class integration_idc_onlyset_noprint implements client_profile {
     }
     if (!cli.before_request())
       return false;
-    val = cli.vset.get_value();
     do {
       try {
-        fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
-        ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-        if (!cli.write_operation(key, val)) {
-          System.out.println("idc onlyset test failed : file write occur exception.");
+        Future<byte[]> f = cli.next_ac.asyncGet(key, raw_transcoder.raw_tc);
+        System.out.printf("get operation request. key = " + key + "\n");
+        //System.out.printf("get operation request. key = " + key + "\n");
+        val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
+        if (val == null) {
+          System.out.printf("repl onlyget test fail key miss : %s\n",key);
           System.exit(1);
         }
       } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
-        if (tries-- <= 0) {
-          System.out.println("test failed operationtimeout over 10 times");
+        if (get_try-- > 0) {
+          System.out.printf("repl get failed. id=%d key=%s remain try count : %d\n",cli.id, key, get_try);
+          Thread.sleep(1000);
+        } else {
+          System.out.printf("repl get failed. id=%d key=%s get operation exceeded 10 times\n",cli.id, key);
           System.exit(1);
         }
-        System.out.println("this test should not occur with TimeoutException... retry set key : " + key);
       } catch (Exception e) {
-        System.out.println("retry set operation after 1 seconds");
-        Thread.sleep(1000);
+        System.out.printf("repl get failed. id=%d key=%s\n",cli.id);
+        e.printStackTrace();
+        System.exit(1);
       }
-    } while (!ok);
-    if (!cli.after_request(ok))
+    } while (val == null);
+    if (!cli.after_request(true))
       return false;
+
     return true;
   }
 }

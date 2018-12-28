@@ -18,7 +18,7 @@
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class integration_repl_onlyset_noprint implements client_profile {
+public class integration_repl_onlyset_print implements client_profile {
   public boolean do_test(client cli) {
     try {
       if (!do_simple_test(cli))
@@ -56,6 +56,8 @@ public class integration_repl_onlyset_noprint implements client_profile {
     do {
       try {
         fb = cli.next_ac.set(key, cli.conf.client_exptime, val, raw_transcoder.raw_tc);
+        System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
+        //System.out.printf("set operation request. key = " + key + ", val = " + val + "\n");
         ok = fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       } catch (net.spy.memcached.internal.CheckedOperationTimeoutException te) {
         if (tries-- <= 0) {
