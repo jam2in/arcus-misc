@@ -1,29 +1,13 @@
 #!/usr/bin/perl -w
 $t_ip = "127.0.0.1";   # test ip
-$t_port = ""; # test port
+$t_port = 11335;
 $cli_num = 10;
 $key_siz = 10000000;
 $operation_dumpfile = "tmp-integration-recovery";
 sub print_usage {
-      print "Usage) perl ./integration/run_integration_recovery.pl <engine_name(squall or gust)>\n";
+      print "Usage) perl ./integration/run_integration_recovery.pl\n";
 }
 
-if ($#ARGV eq 0) {
-    if ($ARGV[0] eq "squall") {
-        $t_port = 11335;
-    } elsif ($ARGV[0] eq "gust") {
-        $t_port = 11336;
-    } else {
-        print_usage();
-        die;
-    }
-    print "engine_name = $ARGV[0]\n";
-    print "test_ip = $t_ip\n";
-    print "test_port = $t_port\n";
-} else {
-    print_usage();
-    die;
-}
 
 use Cwd 'abs_path';
 use File::Basename;
@@ -32,7 +16,7 @@ use File::Basename;
 #######################################
 # start node
 #######################################
-$cmd = "./integration/run.memcached.$ARGV[0].bash $t_port;";
+$cmd = "./integration/run.memcached.default.bash $t_port;";
 system($cmd);
 
 print "3 seconds sleep\n";
@@ -90,7 +74,7 @@ sleep 3;
 ############################################
 # engine restart
 ############################################
-$cmd = "./integration/run.memcached.$ARGV[0].bash $t_port;";
+$cmd = "./integration/run.memcached.default.bash $t_port;";
 system($cmd);
 
 print "engine restart waitting recovery. 40 seconds sleep\n";
