@@ -80,6 +80,7 @@ public class integration_rangesearch implements client_profile {
         getcount = rand.nextInt(maxGetCnt) + 1;
         frkey = key + i;
         tokey = key + (i + getcount);
+        /*
         try {
           fl = cli.next_ac.asyncRangeGet(frkey, tokey, getcount);
           keylist = fl.get(5000, TimeUnit.MILLISECONDS);
@@ -100,6 +101,7 @@ public class integration_rangesearch implements client_profile {
           e.printStackTrace();
           System.exit(1);
         }
+        */
         if (!cli.after_request(true))
           return false;
       }

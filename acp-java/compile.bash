@@ -7,7 +7,7 @@ esac
 
 DIR=`dirname $DIR`
 if test -d "$DIR/../../arcus-java-client" ; then
-  JARFILE=$DIR/../../arcus-java-client/target/arcus-java-client-1.11.3.jar
+  JARFILE=$DIR/../../arcus-java-client/target/arcus-java-client-1.11.5.jar
 else
   if test -d "$DIR/../../java-memcached-client" ; then
     JARFILE=$DIR/../../java-memcached-client/target/arcus-client-1.6.3.0.jar

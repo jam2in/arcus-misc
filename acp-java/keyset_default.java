@@ -44,7 +44,7 @@ class keyset_default implements keyset {
 
   public String get_key_by_cliid(client cli) {
     if (offset == 0) this.offset = set.length / cli.conf.client;
-    if (cli.keyidx > offset) cli.keyidx = 0;
+    if (cli.keyidx >= offset) cli.keyidx = 0;
     return set[cli.id*offset + cli.keyidx++];
   }
 

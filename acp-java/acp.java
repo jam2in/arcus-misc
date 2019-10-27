@@ -348,6 +348,48 @@ class acp {
     else if (conf.client_profile.equals("simple_async_decr")) {
       profile = new simple_async_decr();
     }
+    else if (conf.client_profile.equals("SimpleRequestTest")) {
+      profile = new SimpleRequestTest();
+    }
+    else if (conf.client_profile.equals("SimpleConfirmTest")) {
+      profile = new SimpleConfirmTest();
+    }
+    else if (conf.client_profile.equals("ListRequestTest")) {
+      profile = new ListRequestTest();
+    }
+    else if (conf.client_profile.equals("ListConfirmTest")) {
+      profile = new ListConfirmTest();
+    }
+    else if (conf.client_profile.equals("SetRequestTest")) {
+      profile = new SetRequestTest();
+    }
+    else if (conf.client_profile.equals("SetConfirmTest")) {
+      profile = new SetConfirmTest();
+    }
+    else if (conf.client_profile.equals("MapRequestTest")) {
+      profile = new MapRequestTest();
+    }
+    else if (conf.client_profile.equals("MapConfirmTest")) {
+      profile = new MapConfirmTest();
+    }
+    else if (conf.client_profile.equals("BtreeRequestTest")) {
+      profile = new BtreeRequestTest();
+    }
+    else if (conf.client_profile.equals("BtreeConfirmTest")) {
+      profile = new BtreeConfirmTest();
+    }
+    else if (conf.client_profile.equals("FlushRequestTest")) {
+      profile = new FlushRequestTest();
+    }
+    else if (conf.client_profile.equals("FlushConfirmTest")) {
+      profile = new FlushConfirmTest();
+    }
+    else if (conf.client_profile.equals("AttrRequestTest")) {
+      profile = new AttrRequestTest();
+    }
+    else if (conf.client_profile.equals("AttrConfirmTest")) {
+      profile = new AttrConfirmTest();
+    }
     if (profile == null) {
       System.out.println("Cannot find client profile=" + conf.client_profile);
       System.exit(0);
