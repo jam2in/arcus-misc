@@ -1,4 +1,5 @@
 *.class
 *.log
-tmp-integration*
+tmp-*
 *~
+ARCUS-DB

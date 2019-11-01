@@ -390,6 +390,18 @@ class acp {
     else if (conf.client_profile.equals("AttrConfirmTest")) {
       profile = new AttrConfirmTest();
     }
+    else if (conf.client_profile.equals("persistence_onlyset")) {
+      profile = new persistence_onlyset();
+    } 
+    else if (conf.client_profile.equals("persistence_getset_ratio")) {
+      profile = new persistence_getset_ratio();
+    }
+    else if (conf.client_profile.equals("persistence_recovery_onlyget")) {
+      profile = new persistence_recovery_onlyget();
+    }
+    else if (conf.client_profile.equals("persistence_recovery_onlyset")) {
+      profile = new persistence_recovery_onlyset();
+    }
     if (profile == null) {
       System.out.println("Cannot find client profile=" + conf.client_profile);
       System.exit(0);
