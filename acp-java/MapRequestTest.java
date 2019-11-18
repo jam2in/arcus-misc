@@ -46,8 +46,7 @@ public class MapRequestTest implements client_profile {
         return false;
     map = new CommandMap(cli);
     String getKey = cli.ks.get_key();
-    String ops[] = {"mop_crt", "mop_ist", "mop_crt_ist",
-                    "mop_del", "mop_upd", "mop_drop", "mop_get_with_del"};
+    String ops[] = {"mop_crt", "mop_ist", "mop_del", "mop_upd"};
     for (int i = 0; i < ops.length; i++) {
       key = TestUtil.getTestKey(getKey, ops[i]);
       TestUtil.printRequestStart(ops[i]);

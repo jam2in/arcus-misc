@@ -390,6 +390,9 @@ class acp {
     else if (conf.client_profile.equals("AttrConfirmTest")) {
       profile = new AttrConfirmTest();
     }
+    else if (conf.client_profile.equals("TestEnd")) {
+      profile = new TestEnd();
+    }
     else if (conf.client_profile.equals("persistence_onlyset")) {
       profile = new persistence_onlyset();
     } 

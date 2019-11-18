@@ -1,0 +1,18 @@
+
+#zookeeper=127.0.0.1:2181
+#service_code=test
+single_server=127.0.0.1:11446
+
+client=1
+
+rate=0
+request=1
+time=0
+
+# Clients
+client_profile=TestEnd
+client_exptime=0
+
+pool=1
+pool_size=1
+pool_use_random=false

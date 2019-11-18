@@ -46,8 +46,8 @@ public class SetRequestTest implements client_profile {
         return false;
     set = new CommandSet(cli);
     String getKey = cli.ks.get_key();
-    String ops[] = {"sop_crt", "sop_ist", "sop_crt_ist",
-                    "sop_del", "sop_drop", "sop_get_with_del"};
+    String ops[] = {"sop_crt", "sop_ist",
+                    "sop_del"};
     for (int i = 0; i < ops.length; i++) {
       key = TestUtil.getTestKey(getKey, ops[i]);
       TestUtil.printRequestStart(ops[i]);

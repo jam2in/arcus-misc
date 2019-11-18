@@ -45,8 +45,8 @@ public class BtreeRequestTest implements client_profile {
         return false;
     btree = new CommandBtree(cli);
     String getKey = cli.ks.get_key();
-    String ops[] = {"bop_crt", "bop_ist", "bop_ust", "bop_crt_ist", "bop_smt", "bop_smst", "bop_lgt", "bop_lgst",
-                    "bop_del", "bop_upd", "bop_incr", "bop_decr", "bop_drop", "bop_get_with_del"};
+    String ops[] = {"bop_crt", "bop_ist", "bop_ust",
+                    "bop_del", "bop_upd", "bop_incr", "bop_decr"};
     for (int i = 0; i < ops.length; i++) {
       key = TestUtil.getTestKey(getKey, ops[i]);
       TestUtil.printRequestStart(ops[i]);

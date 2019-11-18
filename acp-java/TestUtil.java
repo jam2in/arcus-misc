@@ -17,6 +17,11 @@
  */
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 import net.spy.memcached.collection.CollectionResponse;
 import net.spy.memcached.CASResponse;
@@ -27,17 +32,23 @@ public class TestUtil {
   private static final String ANSI_RED = "\u001B[31m";
   private static final String ANSI_GREEN = "\u001B[32m";
 
+  private static File file = new File("test_result.txt");
+
   public static void printRequestStart(String command) {
     System.out.printf(ANSI_GREEN + "\n########## %s REQUEST TEST START ##########\n" + ANSI_RESET, command.toUpperCase());
   }
   public static void printRequestSuccess(String command) {
     System.out.printf(ANSI_GREEN + "########## %s REQUEST TEST SUCCESS ##########\n" + ANSI_RESET, command.toUpperCase());
+    commandWrite(command);
   }
   public static void printConfirmStart(String command) {
     System.out.printf(ANSI_GREEN + "\n########## %s CONFIRM TEST START ##########\n" + ANSI_RESET, command.toUpperCase());
   }
   public static void printConfirmSuccess(String command) {
     System.out.printf(ANSI_GREEN + "########## %s CONFIRM TEST SUCCESS ##########\n" + ANSI_RESET, command.toUpperCase());
+  }
+  public static void printTestSuccess(String command) {
+    System.out.printf(ANSI_GREEN + "########## %-12s TEST SUCCESS ##########\n" + ANSI_RESET, command.toUpperCase());
   }
   public static void printRequestError(String command, String key) {
     System.out.printf(ANSI_RED + "%s REQUEST TEST FAILED!! key=%s \n" + ANSI_RESET, command.toUpperCase(), key);
@@ -47,7 +58,28 @@ public class TestUtil {
     System.out.printf(ANSI_RED + "%s CONFIRM TEST FAILED!! key=%s \n" + ANSI_RESET, command.toUpperCase(), key);
     assert(false);
   }
-
+  public static void commandWrite(String command) {
+      try {
+          FileWriter fw = new FileWriter(file, true);
+          fw.write(command + "\n");
+          fw.close();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
+  public static void printTestedCommand() {
+      try {
+          FileReader fr = new FileReader(file);
+          BufferedReader bufReader = new BufferedReader(fr);
+          String line = "";
+          while ((line = bufReader.readLine()) != null) {
+              printTestSuccess(line);
+          }
+          bufReader.close();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
   public static String getTestKey(String key, String ext) {
 //    return key + ext;
     return ext;

@@ -46,8 +46,8 @@ public class ListConfirmTest implements client_profile {
         return false;
     list = new CommandList(cli);
     String getKey = cli.ks.get_key();
-    String ops[] = {"lop_crt", "lop_ist", "lop_crt_ist", "lop_hdt", "lop_tlt",
-                    "lop_del", "lop_drop"};
+    String ops[] = {"lop_crt", "lop_ist",
+                    "lop_del"};
     for (int i = 0; i < ops.length; i++) {
       key = TestUtil.getTestKey(getKey, ops[i]);
       TestUtil.printConfirmStart(ops[i]);

@@ -132,3 +132,13 @@ if ($ret ne 0) {
     exit(1);
 }
 }
+
+$cmd = "./run.bash -config config-tested-print.txt";
+$ret = system($cmd);
+if ($ret ne 0) {
+    printf "TEST FAILED CODE=%d\n", $ret;
+    printf "script name=%s\n", $script;
+    exit(1);
+}
+
+
