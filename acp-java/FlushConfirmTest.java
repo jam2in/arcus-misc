@@ -48,10 +48,10 @@ public class FlushConfirmTest implements client_profile {
     String ops[] = {"flush_all", "flush_prefix"};
     for (int i = 0; i < ops.length; i++) {
       key = ops[i];
-      TestUtil.printRequestStart(ops[i]);
+      TestUtil.printConfirmStart(ops[i]);
       ok = execute(cli, ops[i]);
-      if (ok) TestUtil.printRequestSuccess(ops[i]);
-      else TestUtil.printRequestError(ops[i], key);
+      if (ok) TestUtil.printConfirmSuccess(ops[i]);
+      else TestUtil.printConfirmError(ops[i], key);
     }
     if (!cli.after_request(true))
       return false;

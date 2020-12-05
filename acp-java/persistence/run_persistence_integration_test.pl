@@ -12,6 +12,7 @@ $prefix = "";
 use Cwd 'abs_path';
 use File::Basename;
 
+#NOTE : need to amend port in CommandFlush.java when test flush_all
 @script_list = (
   "Flush"
 , "Simple"
@@ -71,7 +72,7 @@ printf "RUN COMMAND=%s\n", $cmd;
 $ret = system($cmd);
 if ($ret ne 0) {
     printf "TEST FAILED CODE=%d\n", $ret;
-    printf "script name=%s\n", $script;
+    printf "script name=%sRequestTest\n", $script;
     exit(1);
 }
 }
@@ -93,8 +94,9 @@ sleep 3;
 $cmd = "./persistence/run.memcached.persistence.bash $t_port";
 system($cmd);
 
-$sleep = 30;
+$sleep = 15;
 print "engine restart waitting recovery. $sleep seconds sleep\n";
+sleep 15;
 
 
 foreach $script (@script_list) {
@@ -128,7 +130,7 @@ $ret = system($cmd);
 
 if ($ret ne 0) {
     printf "TEST FAILED CODE=%d\n", $ret;
-    printf "script name=%s\n", $script;
+    printf "script name=%sConfirmTest\n", $script;
     exit(1);
 }
 }
