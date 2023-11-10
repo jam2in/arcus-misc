@@ -7,10 +7,10 @@ Arcus miscellaneous code.
 * app_rep : Arcus replication example by application
 * arcus_memc_mon : Arcus memcached process monitoring tool
 * compare : Arcus cache content comparison test
-* lua_sendbox : lua script example 
-* mrr : network latency checker
-* ngrinder : ngrinder test script sample 
+* lua_sendbox : lua script example
+* mrr : https://github.com/jam2in/mrr
+* ngrinder : ngrinder test script sample
 * test_java : Arcus java client text programs
-* test_shelf : miscellanuous tests  
+* test_shelf : miscellanuous tests
 
 
