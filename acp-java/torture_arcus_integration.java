@@ -16,8 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,10 +45,17 @@ import net.spy.memcached.internal.CollectionFuture;
 import net.spy.memcached.internal.CollectionGetBulkFuture;
 import net.spy.memcached.internal.SMGetFuture;
 import net.spy.memcached.ops.CollectionOperationStatus;
+import net.spy.memcached.ArcusClientPool;
 
 // Port of arcus1.6.2-integration.py
 
 public class torture_arcus_integration implements client_profile {
+
+  private static final ReentrantLock lock = new ReentrantLock(true);
+  private static final AtomicBoolean flushed = new AtomicBoolean(false);
+
+  private static final long _24hours = 24 * 60 * 60 * 1000;
+  private static final AtomicLong lastTouchFailed = new AtomicLong(0);
 
   public torture_arcus_integration() {
     int next_val_idx = 0;
@@ -61,7 +74,7 @@ public class torture_arcus_integration implements client_profile {
  }
 
   String lowercase = "abcdefghijlmnopqrstuvwxyz";
-  char[] dummystring = 
+  char[] dummystring =
     ("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
      "abcdefghijlmnopqrstuvwxyz").toCharArray();
   Random random = new Random(); // repeatable is okay
@@ -92,7 +105,7 @@ public class torture_arcus_integration implements client_profile {
     String key = generateData(KeyLen);
     return prefix + name + ":" + key;
   }
-  
+
   // Generates a string workload with specific size.
   String gen_workload(boolean is_collection) {
     if (is_collection) {
@@ -108,22 +121,46 @@ public class torture_arcus_integration implements client_profile {
 
   public boolean do_test(client cli) {
     try {
+      if (!do_Flush(cli))
+        return false;
+
       if (!do_KeyValue(cli))
         return false;
-      
+
       if (!do_Collection_Btree(cli))
         return false;
 
       if (!do_Collection_Map(cli))
         return false;
-         
+
       if (!do_Collection_Set(cli))
         return false;
-      
+
       if (!do_Collection_List(cli))
         return false;
+
+      if (lastTouchFailed.get() + _24hours >= System.currentTimeMillis()) {
+        return true;
+      }
+
+      lock.lock();
+      try {
+        if (lastTouchFailed.get() + _24hours >= System.currentTimeMillis()) {
+          return true;
+        }
+
+        if (!do_Touch(cli))
+          return false;
+      } catch (ExecutionException e) {
+        if (cli.conf.print_stack_trace) {
+          e.printStackTrace();
+        }
+        lastTouchFailed.set(System.currentTimeMillis());
+      } finally {
+        lock.unlock();
+      }
     } catch (Exception e) {
-      System.out.printf("client_profile exception. id=%d exception=%s\n", 
+      System.out.printf("client_profile exception. id=%d exception=%s\n",
                         cli.id, e.toString());
       if (cli.conf.print_stack_trace)
         e.printStackTrace();
@@ -131,16 +168,114 @@ public class torture_arcus_integration implements client_profile {
     return true;
   }
 
+  private Method getTouchMethod() {
+    try {
+      return ArcusClientPool.class.getMethod("touch", String.class, int.class);
+    } catch (NoSuchMethodException e) {
+      return null;
+    }
+  }
+
+  private boolean hasTouchMethod() {
+    return getTouchMethod() != null;
+  }
+
+  @SuppressWarnings("unchecked")
+  private Future<Boolean> touch(client cli, String key, int exptime) {
+    Method touchMethod = getTouchMethod();
+    if (touchMethod == null) {
+      return null;
+    }
+
+    try {
+      return (Future<Boolean>) touchMethod.invoke(cli.next_ac, key, exptime);
+    } catch (InvocationTargetException | IllegalAccessException e) {
+      return null;
+    }
+  }
+
+  public boolean do_Touch(client cli) throws Exception {
+    if (!hasTouchMethod()) {
+      return true;
+    }
+
+    // Pick a key and a value
+    String key = cli.ks.get_key() + "-for-touch";
+    byte[] val = cli.vset.get_value();
+
+    // Exptime
+    int set_exptime = cli.conf.client_exptime / 2;
+    int touch_exptime = cli.conf.client_exptime;
+
+    if (!cli.before_request()) {
+      return false;
+    }
+
+    Future<Boolean> fb = cli.next_ac.set(key, set_exptime, val, raw_transcoder.raw_tc);
+    if (!fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS)) {
+      System.out.printf("set before touch failed. id=%d key=%s\n", cli.id, key);
+      return cli.after_request(false);
+    }
+
+    fb = touch(cli, key, touch_exptime);
+    if (!fb.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS)) {
+      System.out.printf("touch failed. id=%d key=%s\n", cli.id, key);
+      return cli.after_request(false);
+    }
+
+    CollectionAttributes attr = cli.next_ac.asyncGetAttr(key).get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
+    if (attr == null || attr.getExpireTime() == null) {
+      System.out.printf("getAttrs after touch failed. id=%d key=%s\n", cli.id, key);
+      return cli.after_request(false);
+    }
+    if (attr.getExpireTime() <= set_exptime) {
+      System.out.printf("getAttrs after touch failed for exptime. touched %d but got %d. id=%d key=%s\n",
+                        touch_exptime, set_exptime, cli.id, key);
+      return cli.after_request(false);
+    }
+
+    return cli.after_request(true);
+  }
+
+  public boolean do_Flush(client cli) throws Exception {
+    if (flushed.get()) {
+      return true;
+    }
+
+    lock.lock();
+    try {
+      if (flushed.get()) {
+        return true;
+      }
+
+      if (!cli.before_request()) {
+        return false;
+      }
+
+      String prefix = cli.conf.key_prefix;
+      if (prefix.endsWith(":")) {
+        prefix = prefix.substring(0, prefix.length() - 1);
+      }
+
+      boolean ok = cli.next_ac.flush(prefix).get();
+      flushed.set(ok);
+
+      return cli.after_request(ok);
+    } finally {
+      lock.unlock();
+    }
+  }
+
   // get:set:delete:incr:decr = 3:1:0.01:0.1:0.0001
   public boolean do_KeyValue(client cli) throws Exception {
     String key = cli.ks.get_key_by_cliid(cli);
-    String[] workloads = { chunk_values[4], 
-                           chunk_values[5], 
-                           chunk_values[6], 
-                           chunk_values[7], 
+    String[] workloads = { chunk_values[4],
+                           chunk_values[5],
+                           chunk_values[6],
+                           chunk_values[7],
                            chunk_values[8] };
 
-    // Set 
+    // Set
     for (int i = 0; i < 1; i++) {
       if (!cli.before_request())
         return false;
@@ -175,7 +310,7 @@ public class torture_arcus_integration implements client_profile {
       Future<Boolean> f = cli.next_ac.delete(key);
       boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
-        System.out.printf("KeyValue: delete failed. id=%d key=%s\n", 
+        System.out.printf("KeyValue: delete failed. id=%d key=%s\n",
                           cli.id, key);
       }
       if (!cli.after_request(ok))
@@ -209,7 +344,7 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(ok))
         return false;
     }
-    
+
     // Decr
     if (random.nextInt(1) == 0) {
       if (!cli.before_request())
@@ -239,26 +374,26 @@ public class torture_arcus_integration implements client_profile {
 
     return true;
   }
-  
+
   public boolean do_Collection_Btree(client cli) throws Exception {
     String key = cli.ks.get_key_by_cliid(cli);
     List<String> key_list = new LinkedList<String>();
     for (int i = 0; i < 1; i++)
       key_list.add(key + lowercase.charAt(i));
-    
+
     String bkeyBASE = "bkey_byteArry";
 
     byte[] eflag = ("EFLAG").getBytes();
-    ElementFlagFilter filter = 
+    ElementFlagFilter filter =
       new ElementFlagFilter(ElementFlagFilter.CompOperands.Equal,
                             ("EFLAG").getBytes());
     CollectionAttributes attr = new CollectionAttributes();
     attr.setExpireTime(cli.conf.client_exptime);
 
-    String[] workloads = { chunk_values[4], 
-                           chunk_values[5], 
-                           chunk_values[6], 
-                           chunk_values[7], 
+    String[] workloads = { chunk_values[4],
+                           chunk_values[5],
+                           chunk_values[6],
+                           chunk_values[7],
                            chunk_values[8] };
 
     // BopInsert + byte_array bkey
@@ -271,7 +406,7 @@ public class torture_arcus_integration implements client_profile {
         String bk = bkeyBASE + Integer.toString(j) + Integer.toString(i);
         byte[] bkey = bk.getBytes();
         CollectionFuture<Boolean> f = cli.next_ac.
-          asyncBopInsert(key_list.get(j), bkey, eflag, 
+          asyncBopInsert(key_list.get(j), bkey, eflag,
                          workloads[random.nextInt(workloads.length)], attr);
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
@@ -284,7 +419,7 @@ public class torture_arcus_integration implements client_profile {
           return false;
       }
     }
-    
+
     // Bop Bulk Insert (Piped Insert)
     {
       List<Element<Object>> elements = new LinkedList<Element<Object>>();
@@ -297,9 +432,9 @@ public class torture_arcus_integration implements client_profile {
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
         cli.next_ac.asyncBopPipedInsertBulk(key_list.get(0), elements,
                                             new CollectionAttributes());
-      Map<Integer, CollectionOperationStatus> status_map = 
+      Map<Integer, CollectionOperationStatus> status_map =
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-      Iterator<CollectionOperationStatus> status_iter = 
+      Iterator<CollectionOperationStatus> status_iter =
         status_map.values().iterator();
       while (status_iter.hasNext()) {
         CollectionOperationStatus status = status_iter.next();
@@ -327,7 +462,7 @@ public class torture_arcus_integration implements client_profile {
                                 0, random.nextInt(10) + 10,
                                 /* random.randint(10, 20) */
                                 false, false);
-      Map<ByteArrayBKey, Element<Object>> val = 
+      Map<ByteArrayBKey, Element<Object>> val =
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
         System.out.printf("Collection_Btree: BopGet failed." +
@@ -351,7 +486,7 @@ public class torture_arcus_integration implements client_profile {
         cli.next_ac.asyncBopGetBulk(key_list, bkey, bkey_to, filter, 0,
                                     random.nextInt(10) + 10
                                     /* random.randint(10, 20) */);
-      Map<String, BTreeGetResult<ByteArrayBKey, Object>> val = 
+      Map<String, BTreeGetResult<ByteArrayBKey, Object>> val =
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
         System.out.printf("Collection_Btree: BopGetBulk failed." +
@@ -364,13 +499,13 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(true))
         return false;
     }
-    
+
     // BopEmpty Create
     {
       if (!cli.before_request())
         return false;
-      CollectionFuture<Boolean> f = 
-        cli.next_ac.asyncBopCreate(key, ElementValueType.STRING, 
+      CollectionFuture<Boolean> f =
+        cli.next_ac.asyncBopCreate(key, ElementValueType.STRING,
                                    new CollectionAttributes());
       boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
@@ -391,8 +526,8 @@ public class torture_arcus_integration implements client_profile {
       byte[] bkey = bk.getBytes();
       byte[] bkey_to = bk_to.getBytes();
       SMGetFuture<List<SMGetElement<Object>>> f =
-        cli.next_ac.asyncBopSortMergeGet(key_list, bkey, bkey_to, 
-                                         filter, 0, 
+        cli.next_ac.asyncBopSortMergeGet(key_list, bkey, bkey_to,
+                                         filter, 0,
                                          random.nextInt(10) + 10
                                          /* random.randint(10, 20) */);
       List<SMGetElement<Object>> val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
@@ -404,14 +539,14 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(true))
         return false;
     }
-    
+
     // BopUpdate  (eflag bitOP + value)
     {
       String key0 = key_list.get(0);
       int eflagOffset = 0;
       String value = "ThisIsChangeValue";
-      ElementFlagUpdate bitop = 
-        new ElementFlagUpdate(eflagOffset, 
+      ElementFlagUpdate bitop =
+        new ElementFlagUpdate(eflagOffset,
                               ElementFlagFilter.BitWiseOperands.AND,
                               ("aflag").getBytes());
       for (int i = 0; i < 1; i++) {
@@ -419,7 +554,7 @@ public class torture_arcus_integration implements client_profile {
           return false;
         String bk = bkeyBASE + "0" + Integer.toString(i);
         byte[] bkey = bk.getBytes();
-        CollectionFuture<Boolean> f = 
+        CollectionFuture<Boolean> f =
           cli.next_ac.asyncBopUpdate(key0, bkey, bitop, value);
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
@@ -431,7 +566,7 @@ public class torture_arcus_integration implements client_profile {
           return false;
       }
     }
-    
+
     // SetAttr  (change Expire Time)
     {
       if (!cli.before_request())
@@ -447,7 +582,7 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(ok))
         return false;
     }
-    
+
     // BopDelete          (eflag filter delete)
     {
       for (int j = 0; j < 1; j++) {
@@ -457,7 +592,7 @@ public class torture_arcus_integration implements client_profile {
         String bk_to = bkeyBASE + Integer.toString(j) + "10";
         byte[] bkey = bk.getBytes();
         byte[] bkey_to = bk_to.getBytes();
-        CollectionFuture<Boolean> f = 
+        CollectionFuture<Boolean> f =
           cli.next_ac.asyncBopDelete(key_list.get(j), bkey, bkey_to, filter,
                                      0, false);
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
@@ -485,10 +620,10 @@ public class torture_arcus_integration implements client_profile {
     CollectionAttributes attr = new CollectionAttributes();
     attr.setExpireTime(cli.conf.client_exptime);
 
-    String[] workloads = { chunk_values[4], 
-                           chunk_values[5], 
-                           chunk_values[6], 
-                           chunk_values[7], 
+    String[] workloads = { chunk_values[4],
+                           chunk_values[5],
+                           chunk_values[6],
+                           chunk_values[7],
                            chunk_values[8] };
 
     // MopInsert
@@ -648,10 +783,10 @@ public class torture_arcus_integration implements client_profile {
     CollectionAttributes attr = new CollectionAttributes();
     attr.setExpireTime(cli.conf.client_exptime);
 
-    String[] workloads = { chunk_values[4], 
-                           chunk_values[5], 
-                           chunk_values[6], 
-                           chunk_values[7], 
+    String[] workloads = { chunk_values[4],
+                           chunk_values[5],
+                           chunk_values[6],
+                           chunk_values[7],
                            chunk_values[8] };
 
     // SopInsert
@@ -661,7 +796,7 @@ public class torture_arcus_integration implements client_profile {
           if (!cli.before_request())
             return false;
           String set_value = workloads[i] + Integer.toString(j);
-          CollectionFuture<Boolean> f = 
+          CollectionFuture<Boolean> f =
             cli.next_ac.asyncSopInsert(key_list.get(i), set_value, attr);
           boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (!ok) {
@@ -674,7 +809,7 @@ public class torture_arcus_integration implements client_profile {
         }
       }
     }
-    
+
     // SopInsert Bulk (Piped)
     {
       List<Object> elements = new LinkedList<Object>();
@@ -684,11 +819,11 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.before_request())
         return false;
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
-        cli.next_ac.asyncSopPipedInsertBulk(key_list.get(0), elements, 
+        cli.next_ac.asyncSopPipedInsertBulk(key_list.get(0), elements,
                                             new CollectionAttributes());
-      Map<Integer, CollectionOperationStatus> status_map = 
+      Map<Integer, CollectionOperationStatus> status_map =
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-      Iterator<CollectionOperationStatus> status_iter = 
+      Iterator<CollectionOperationStatus> status_iter =
         status_map.values().iterator();
       while (status_iter.hasNext()) {
         CollectionOperationStatus status = status_iter.next();
@@ -702,13 +837,13 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(true))
         return false;
     }
-    
+
     // SopEmpty Create
     {
       if (!cli.before_request())
         return false;
-      CollectionFuture<Boolean> f = 
-        cli.next_ac.asyncSopCreate(key, ElementValueType.STRING, 
+      CollectionFuture<Boolean> f =
+        cli.next_ac.asyncSopCreate(key, ElementValueType.STRING,
                                    new CollectionAttributes());
       boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (!ok) {
@@ -719,7 +854,7 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(ok))
         return false;
     }
-    
+
     // SopExist    (Piped exist)
     {
       for (int i = 0; i < 1; i++) {
@@ -728,7 +863,7 @@ public class torture_arcus_integration implements client_profile {
           if (!cli.before_request())
             return false;
           list_value.add(workloads[i] + Integer.toString(j));
-          CollectionFuture<Map<Object, Boolean>> f = 
+          CollectionFuture<Map<Object, Boolean>> f =
             cli.next_ac.asyncSopPipedExistBulk(key_list.get(i), list_value);
           Map<Object, Boolean> result_map =
             f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
@@ -736,7 +871,7 @@ public class torture_arcus_integration implements client_profile {
             System.out.printf("Collection_Set: SopPipedExistBulk failed." +
                               " id=%d key=%s result_map.size=%d" +
                               " list_value.size=%d\n",
-                              cli.id, key_list.get(i), 
+                              cli.id, key_list.get(i),
                               result_map == null ? -1 : result_map.size(),
                               list_value.size());
           }
@@ -745,7 +880,7 @@ public class torture_arcus_integration implements client_profile {
         }
       }
     }
-    
+
     // SetAttr  (change Expire Time)
     {
       if (!cli.before_request())
@@ -761,7 +896,7 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.after_request(ok))
         return false;
     }
-    
+
     // SopDelete
     {
       for (int i = 0; i < 1; i++) {
@@ -769,7 +904,7 @@ public class torture_arcus_integration implements client_profile {
           if (!cli.before_request())
             return false;
           String del_value = workloads[i] + Integer.toString(j);
-          CollectionFuture<Boolean> f = 
+          CollectionFuture<Boolean> f =
             cli.next_ac.asyncSopDelete(key_list.get(i), del_value, true);
           boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (!ok) {
@@ -796,10 +931,10 @@ public class torture_arcus_integration implements client_profile {
     CollectionAttributes attr = new CollectionAttributes();
     attr.setExpireTime(cli.conf.client_exptime);
 
-    String[] workloads = { chunk_values[4], 
-                           chunk_values[5], 
-                           chunk_values[6], 
-                           chunk_values[7], 
+    String[] workloads = { chunk_values[4],
+                           chunk_values[5],
+                           chunk_values[6],
+                           chunk_values[7],
                            chunk_values[8] };
 
     // LopInsert
@@ -810,7 +945,7 @@ public class torture_arcus_integration implements client_profile {
           if (!cli.before_request())
             return false;
           CollectionFuture<Boolean> f = cli.next_ac
-            .asyncLopInsert(key_list.get(i), index, 
+            .asyncLopInsert(key_list.get(i), index,
                             workloads[random.nextInt(workloads.length)], attr);
           boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
           if (!ok) {
@@ -833,11 +968,11 @@ public class torture_arcus_integration implements client_profile {
       if (!cli.before_request())
         return false;
       CollectionFuture<Map<Integer, CollectionOperationStatus>> f =
-        cli.next_ac.asyncLopPipedInsertBulk(key_list.get(0), -1, elements, 
+        cli.next_ac.asyncLopPipedInsertBulk(key_list.get(0), -1, elements,
                                             new CollectionAttributes());
-      Map<Integer, CollectionOperationStatus> status_map = 
+      Map<Integer, CollectionOperationStatus> status_map =
         f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
-      Iterator<CollectionOperationStatus> status_iter = 
+      Iterator<CollectionOperationStatus> status_iter =
         status_map.values().iterator();
       while (status_iter.hasNext()) {
         CollectionOperationStatus status = status_iter.next();
@@ -858,16 +993,16 @@ public class torture_arcus_integration implements client_profile {
         if (!cli.before_request())
           return false;
         int index = 0;
-        int index_to = index + 
+        int index_to = index +
           /* random.randint(10, 20) */ random.nextInt(10) + 10;
         CollectionFuture<List<Object>> f =
-          cli.next_ac.asyncLopGet(key_list.get(i), index, index_to, 
+          cli.next_ac.asyncLopGet(key_list.get(i), index, index_to,
                                   false, false);
         List<Object> val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (val == null || val.size() <= 0) {
           System.out.printf("Collection_List: LopGet failed." +
                             " id=%d key=%s val.size=%d\n",
-                            cli.id, key_list.get(i), 
+                            cli.id, key_list.get(i),
                             val == null ? -1 : val.size());
         }
         if (!cli.after_request(true))
@@ -899,7 +1034,7 @@ public class torture_arcus_integration implements client_profile {
       for (int i = 0; i < 1; i++) {
         if (!cli.before_request())
           return false;
-        CollectionFuture<Boolean> f = 
+        CollectionFuture<Boolean> f =
           cli.next_ac.asyncLopDelete(key_list.get(i), index, index_to, true);
         boolean ok = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
         if (!ok) {
