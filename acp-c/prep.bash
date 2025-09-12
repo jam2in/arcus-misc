@@ -1,2 +1,2 @@
 #name=`hostname`
-export LD_LIBRARY_PATH=/home1/username/arcus-rep/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/test/arcus/lib

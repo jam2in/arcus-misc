@@ -1,19 +1,19 @@
-zookeeper=10.33.144.120:2181,10.33.145.182:2181,10.34.33.62:2181
-service_code=long_running
+zookeeper=10.34.93.160:2195,10.33.145.231:2195,10.33.137.55:2195
+service_code=long_running_replication
 #single_server=10.34.30.237:11700
 
-client=16
-client_exptime=1000
+client=5
+client_exptime=20
 
-rate=300
+rate=1000
 request=0
 time=0
 
-keyset_size=600000
-key_prefix=java-s003:
+keyset_size=200000
+key_prefix=java-jam2in-m001:
 
 client_profile=torture_arcus_integration
 
 pool=1
-pool_size=16
+pool_size=5
 pool_use_random=false
