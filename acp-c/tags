@@ -1,0 +1,251 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACP_OBJ	Makefile	/^ACP_OBJ = $(ACP_SRC:.c=.o)$/;"	m
+ACP_SRC	Makefile	/^ACP_SRC = acp.c common.c config.c keyset.c valueset.c client.c lat_vec.c \\$/;"	m
+BASEDIR	Makefile	/^BASEDIR=\/home\/test\/arcus$/;"	m
+CC	Makefile	/^CC = gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -Wall -Werror -g \\$/;"	m
+ERRLOG	common.h	41;"	d
+ERROR_DIE	common.h	50;"	d
+LFLAGS	Makefile	/^LFLAGS = $(LIB_INC_FLAGS) \\$/;"	m
+LIB_INC_FLAGS	Makefile	/^LIB_INC_FLAGS = -L$(BASEDIR)\/lib$/;"	m
+LOGLEVEL_DEBUG	common.h	45;"	d
+LOGLEVEL_FATAL	common.h	48;"	d
+LOGLEVEL_INFO	common.h	46;"	d
+LOGLEVEL_WARN	common.h	47;"	d
+PERROR_DIE	common.h	56;"	d
+_CLIENT_H_	client.h	18;"	d
+_CLIENT_PROFILE_H_	client_profile.h	18;"	d
+_COMMON_H_	common.h	18;"	d
+_CONFIG_H_	config.h	18;"	d
+_KEYSET_H_	keyset.h	18;"	d
+_LAT_VEC_H_	lat_vec.h	18;"	d
+_VALUESET_H_	valueset.h	18;"	d
+add_latency	client.c	/^add_latency(struct client *cli, uint64_t lat)$/;"	f	file:
+all_cli	acp.c	/^struct client **all_cli;$/;"	v	typeref:struct:client
+all_master_mc	acp.c	/^memcached_st **all_master_mc;$/;"	v
+all_pool	acp.c	/^memcached_pool_st **all_pool;$/;"	v
+attr	client.h	/^  pthread_attr_t attr;$/;"	m	struct:client
+buf	valueset.c	/^  uint8_t *buf;$/;"	m	struct:valueset	file:
+client	client.h	/^struct client {$/;"	s
+client	config.h	/^  int client;$/;"	m	struct:config
+client_after_request	client.c	/^client_after_request(struct client *cli, int ok)$/;"	f
+client_after_request_with_rc	client.c	/^client_after_request_with_rc(struct client *cli, memcached_return rc)$/;"	f
+client_before_request	client.c	/^client_before_request(struct client *cli)$/;"	f
+client_init	client.c	/^client_init(struct config *conf, int id, struct keyset *ks,$/;"	f
+client_join	client.c	/^client_join(struct client *cli)$/;"	f
+client_profile	client_profile.h	/^struct client_profile {$/;"	s
+client_profile	config.h	/^  const char *client_profile;$/;"	m	struct:config
+client_remove_latency_vector	client.c	/^client_remove_latency_vector(struct client *cli)$/;"	f
+client_run	client.c	/^client_run(struct client *cli)$/;"	f
+client_set_stop	client.c	/^client_set_stop(struct client *cli)$/;"	f
+client_simple_getset_get_count	config.h	/^  int client_simple_getset_get_count;$/;"	m	struct:config
+client_thread	client.c	/^client_thread(void *arg)$/;"	f	file:
+cond	client.h	/^  pthread_cond_t cond;$/;"	m	struct:client
+conf	acp.c	/^struct config conf;$/;"	v	typeref:struct:config
+conf	client.h	/^  struct config *conf;$/;"	m	struct:client	typeref:struct:client::config
+conf_get_count	simple_getset.c	/^static int conf_get_count;$/;"	v	file:
+config	config.h	/^struct config {$/;"	s
+config_default_init	config.c	/^config_default_init(struct config *conf)$/;"	f
+config_key_val	config.c	/^config_key_val(struct config *o, int line_num, char *key, char *val)$/;"	f	file:
+config_line	config.c	/^config_line(struct config *o, int line_num, char line[])$/;"	f	file:
+config_read	config.c	/^config_read(struct config *o, const char *path)$/;"	f
+connect_pool	acp.c	/^connect_pool(memcached_pool_st *pool, char *host, int port)$/;"	f	file:
+create_key	torture_btree_exptime.c	/^create_key(struct client *cli, const char *key, int base)$/;"	f	file:
+create_proc_name	common.c	/^create_proc_name(char **name, char *host, int port, char *trailer)$/;"	f
+default_conf	config.c	/^struct config default_conf = {$/;"	v	typeref:struct:config
+default_profile	simple_getset.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	simple_set.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	standard_mix.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_bytebkey.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_bytemaxbkeyrange.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_decinc.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_exptime.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_ins_del.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_maxbkeyrange.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_piped_ins.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_piped_ins_bulk.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_btree_replace.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_list.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_list_ins_del.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_list_piped_ins.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_set.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_set_ins_del.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_set_piped_exist.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_set_piped_ins.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_simple_cas.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_simple_decinc.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_simple_sticky.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+default_profile	torture_simple_zero_exptime.c	/^static struct client_profile default_profile = {$/;"	v	typeref:struct:client_profile	file:
+do_btree_test	standard_mix.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_bytebkey.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_bytemaxbkeyrange.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_decinc.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_exptime.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_ins_del.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_maxbkeyrange.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_piped_ins.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_piped_ins_bulk.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_btree_test	torture_btree_replace.c	/^do_btree_test(struct client *cli)$/;"	f	file:
+do_list_test	standard_mix.c	/^do_list_test(struct client *cli)$/;"	f	file:
+do_list_test	torture_list.c	/^do_list_test(struct client *cli)$/;"	f	file:
+do_list_test	torture_list_ins_del.c	/^do_list_test(struct client *cli)$/;"	f	file:
+do_list_test	torture_list_piped_ins.c	/^do_list_test(struct client *cli)$/;"	f	file:
+do_map_test	standard_mix.c	/^ do_map_test(struct client *cli)$/;"	f	file:
+do_set_test	standard_mix.c	/^do_set_test(struct client *cli)$/;"	f	file:
+do_set_test	torture_set.c	/^do_set_test(struct client *cli)$/;"	f	file:
+do_set_test	torture_set_ins_del.c	/^do_set_test(struct client *cli)$/;"	f	file:
+do_set_test	torture_set_piped_exist.c	/^do_set_test(struct client *cli)$/;"	f	file:
+do_set_test	torture_set_piped_ins.c	/^do_set_test(struct client *cli)$/;"	f	file:
+do_simple_test	simple_getset.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_simple_test	simple_set.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_simple_test	standard_mix.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_simple_test	torture_simple_cas.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_simple_test	torture_simple_decinc.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_simple_test	torture_simple_sticky.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_simple_test	torture_simple_zero_exptime.c	/^do_simple_test(struct client *cli)$/;"	f	file:
+do_test	client_profile.h	/^  int (*do_test)(struct client *);$/;"	m	struct:client_profile
+do_test	simple_getset.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	simple_set.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	standard_mix.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_bytebkey.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_bytemaxbkeyrange.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_decinc.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_exptime.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_ins_del.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_maxbkeyrange.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_piped_ins.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_piped_ins_bulk.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_btree_replace.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_list.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_list_ins_del.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_list_piped_ins.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_set.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_set_ins_del.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_set_piped_exist.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_set_piped_ins.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_simple_cas.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_simple_decinc.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_simple_sticky.c	/^do_test(struct client *cli)$/;"	f	file:
+do_test	torture_simple_zero_exptime.c	/^do_test(struct client *cli)$/;"	f	file:
+fill_sockaddr	common.c	/^fill_sockaddr(char *host, struct sockaddr_in *addr)$/;"	f
+getmsec	common.c	/^getmsec(void)$/;"	f
+gettime	common.c	/^gettime(uint64_t *msec, struct timeval *ptv, struct timespec *pts)$/;"	f
+getusec	common.c	/^getusec(void)$/;"	f
+id	client.h	/^  int id;$/;"	m	struct:client
+key_prefix	config.h	/^  const char *key_prefix;$/;"	m	struct:config
+keyidx	client.h	/^  int keyidx;$/;"	m	struct:client
+keyset	keyset.c	/^struct keyset {$/;"	s	file:
+keyset_get_key	keyset.c	/^keyset_get_key(struct keyset *ks, int *id)$/;"	f
+keyset_get_key_by_cliid	keyset.c	/^keyset_get_key_by_cliid(struct keyset *ks, struct client *cli)$/;"	f
+keyset_init	keyset.c	/^keyset_init(int num, const char *prefix)$/;"	f
+keyset_reset	keyset.c	/^keyset_reset(struct keyset *ks)$/;"	f
+keyset_size	config.h	/^  int keyset_size;$/;"	m	struct:config
+ks	acp.c	/^struct keyset *ks;$/;"	v	typeref:struct:keyset
+ks	client.h	/^  struct keyset *ks;$/;"	m	struct:client	typeref:struct:client::keyset
+lat	lat_vec.h	/^  uint64_t lat[1];$/;"	m	struct:lat_vec
+lat_vec	lat_vec.h	/^struct lat_vec {$/;"	s
+lat_vec_add	lat_vec.c	/^lat_vec_add(struct lat_vec *v, uint64_t lat)$/;"	f
+lat_vec_free	lat_vec.c	/^lat_vec_free(struct lat_vec *v)$/;"	f
+lat_vec_init	lat_vec.c	/^lat_vec_init(int max_elem)$/;"	f
+lat_vec_sort	lat_vec.c	/^lat_vec_sort(struct lat_vec *v)$/;"	f
+lock	client.h	/^  pthread_mutex_t lock;$/;"	m	struct:client
+lock	keyset.c	/^  pthread_mutex_t lock;$/;"	m	struct:keyset	file:
+lock	valueset.c	/^  pthread_mutex_t lock;$/;"	m	struct:valueset	file:
+lvec	client.h	/^  struct lat_vec *lvec;$/;"	m	struct:client	typeref:struct:client::lat_vec
+main	acp.c	/^main(int argc, char *argv[])$/;"	f
+max	lat_vec.h	/^  int max;$/;"	m	struct:lat_vec
+max	valueset.c	/^  int max;$/;"	m	struct:valueset	file:
+min	valueset.c	/^  int min;$/;"	m	struct:valueset	file:
+msec_to_timestring	common.c	/^msec_to_timestring(uint64_t msec)$/;"	f
+next_idx	keyset.c	/^  int next_idx;$/;"	m	struct:keyset	file:
+next_mc	client.h	/^  memcached_st *next_mc;$/;"	m	struct:client
+next_off	valueset.c	/^  int next_off;$/;"	m	struct:valueset	file:
+next_size	valueset.c	/^  int next_size;$/;"	m	struct:valueset	file:
+num	lat_vec.h	/^  int num;$/;"	m	struct:lat_vec
+offset	keyset.c	/^  int offset;$/;"	m	struct:keyset	file:
+parse_args	acp.c	/^parse_args(int argc, char *argv[], struct config *conf)$/;"	f	file:
+parse_hex	common.c	/^parse_hex(char *s, uint64_t *val)$/;"	f
+parse_hostport	common.c	/^parse_hostport(char *addr_str, struct sockaddr_in *addr, char **host_out)$/;"	f
+poll_timeout	config.h	/^  int poll_timeout;$/;"	m	struct:config
+pool	client.h	/^  memcached_pool_st *pool;$/;"	m	struct:client
+pool	config.h	/^  int pool;$/;"	m	struct:config
+pool_size	config.h	/^  int pool_size;$/;"	m	struct:config
+print_check	standard_mix.c	/^static int print_check(int ok, memcached_return rc)$/;"	f	file:
+print_errlog	common.c	/^print_errlog(const char *file, int line, int err, const char *fmt, ...)$/;"	f
+print_hexdump	common.c	/^print_hexdump(const char *data, int len)$/;"	f
+print_log	common.c	/^print_log(const char *fmt, ...)$/;"	f
+print_log_hexdump	common.c	/^print_log_hexdump(const char *data, int len, const char *fmt, ...)$/;"	f
+print_usage	run_all_repl_openarcus.pl	/^sub print_usage {$/;"	s
+prof	client.h	/^  struct client_profile *prof;$/;"	m	struct:client	typeref:struct:client::client_profile
+quiet	config.h	/^  int quiet;$/;"	m	struct:config
+quit_on_error	config.h	/^  int quit_on_error;$/;"	m	struct:config
+rate	config.h	/^  int rate;$/;"	m	struct:config
+rem_requests	client.h	/^  int rem_requests;$/;"	m	struct:client
+request	config.h	/^  int request;$/;"	m	struct:config
+request_end_usec	client.h	/^  uint64_t request_end_usec;$/;"	m	struct:client
+request_start_usec	client.h	/^  uint64_t request_start_usec;$/;"	m	struct:client
+run_bench	acp.c	/^run_bench(void)$/;"	f	file:
+running	client.h	/^  int running;$/;"	m	struct:client
+scream	config.h	/^  int scream;$/;"	m	struct:config
+seq	valueset.c	/^  int seq;$/;"	m	struct:valueset	file:
+service_code	config.h	/^  const char *service_code;$/;"	m	struct:config
+set	keyset.c	/^  const char **set;$/;"	m	struct:keyset	file:
+set_size	keyset.c	/^  int set_size;$/;"	m	struct:keyset	file:
+setup	acp.c	/^setup(void)$/;"	f	file:
+simple_getset_init	simple_getset.c	/^simple_getset_init(int get_count)$/;"	f
+simple_set_init	simple_set.c	/^simple_set_init(void)$/;"	f
+single_server	config.h	/^  const char *single_server;$/;"	m	struct:config
+sockaddr_from_proc_name	common.c	/^sockaddr_from_proc_name(char *name, struct sockaddr_in *addr)$/;"	f
+standard_mix_init	standard_mix.c	/^standard_mix_init(void)$/;"	f
+start_time	client.h	/^  uint64_t start_time;$/;"	m	struct:client
+stat_error_client	client.h	/^  uint64_t stat_error_client;$/;"	m	struct:client
+stat_error_disabled	client.h	/^  uint64_t stat_error_disabled;$/;"	m	struct:client
+stat_error_no_server	client.h	/^  uint64_t stat_error_no_server;$/;"	m	struct:client
+stat_error_other	client.h	/^  uint64_t stat_error_other;$/;"	m	struct:client
+stat_requests	client.h	/^  uint64_t stat_requests;$/;"	m	struct:client
+stat_requests_error	client.h	/^  uint64_t stat_requests_error;$/;"	m	struct:client
+stats_stop	acp.c	/^static int stats_stop = 0;$/;"	v	file:
+stats_thread	acp.c	/^stats_thread(void *arg)$/;"	f	file:
+tid	client.h	/^  pthread_t tid;$/;"	m	struct:client
+time	config.h	/^  int time;$/;"	m	struct:config
+torture_btree_bytebkey_init	torture_btree_bytebkey.c	/^torture_btree_bytebkey_init(void)$/;"	f
+torture_btree_bytemaxbkeyrange_init	torture_btree_bytemaxbkeyrange.c	/^torture_btree_bytemaxbkeyrange_init(void)$/;"	f
+torture_btree_decinc_init	torture_btree_decinc.c	/^torture_btree_decinc_init(void)$/;"	f
+torture_btree_exptime_init	torture_btree_exptime.c	/^torture_btree_exptime_init(void)$/;"	f
+torture_btree_init	torture_btree.c	/^torture_btree_init(void)$/;"	f
+torture_btree_ins_del_init	torture_btree_ins_del.c	/^torture_btree_ins_del_init(void)$/;"	f
+torture_btree_maxbkeyrange_init	torture_btree_maxbkeyrange.c	/^torture_btree_maxbkeyrange_init(void)$/;"	f
+torture_btree_piped_ins_bulk_init	torture_btree_piped_ins_bulk.c	/^torture_btree_piped_ins_bulk_init(void)$/;"	f
+torture_btree_piped_ins_init	torture_btree_piped_ins.c	/^torture_btree_piped_ins_init(void)$/;"	f
+torture_btree_replace_init	torture_btree_replace.c	/^torture_btree_replace_init(void)$/;"	f
+torture_list_init	torture_list.c	/^torture_list_init(void)$/;"	f
+torture_list_ins_del_init	torture_list_ins_del.c	/^torture_list_ins_del_init(void)$/;"	f
+torture_list_piped_ins_init	torture_list_piped_ins.c	/^torture_list_piped_ins_init(void)$/;"	f
+torture_set_init	torture_set.c	/^torture_set_init(void)$/;"	f
+torture_set_ins_del_init	torture_set_ins_del.c	/^torture_set_ins_del_init(void)$/;"	f
+torture_set_piped_exist_init	torture_set_piped_exist.c	/^torture_set_piped_exist_init(void)$/;"	f
+torture_set_piped_ins_init	torture_set_piped_ins.c	/^torture_set_piped_ins_init(void)$/;"	f
+torture_simple_cas_init	torture_simple_cas.c	/^torture_simple_cas_init(void)$/;"	f
+torture_simple_decinc_init	torture_simple_decinc.c	/^torture_simple_decinc_init(void)$/;"	f
+torture_simple_sticky_init	torture_simple_sticky.c	/^torture_simple_sticky_init(void)$/;"	f
+torture_simple_zero_exptime_init	torture_simple_zero_exptime.c	/^torture_simple_zero_exptime_init(void)$/;"	f
+uint64_compare	lat_vec.c	/^uint64_compare(const void *a, const void *b)$/;"	f	file:
+usage	acp.c	/^usage(void)$/;"	f	file:
+valueset	valueset.c	/^struct valueset {$/;"	s	file:
+valueset_get_value	valueset.c	/^valueset_get_value(struct valueset *vs, uint8_t **ptr)$/;"	f
+valueset_init	valueset.c	/^valueset_init(int min, int max)$/;"	f
+valueset_max_size	config.h	/^  int valueset_max_size;$/;"	m	struct:config
+valueset_min_size	config.h	/^  int valueset_min_size;$/;"	m	struct:config
+valueset_reset	valueset.c	/^valueset_reset(struct valueset *vs)$/;"	f
+valueset_return_value	valueset.c	/^valueset_return_value(struct valueset *vs, uint8_t *ptr)$/;"	f
+vs	acp.c	/^struct valueset *vs;$/;"	v	typeref:struct:valueset
+vs	client.h	/^  struct valueset *vs;$/;"	m	struct:client	typeref:struct:client::valueset
+zookeeper	config.h	/^  const char *zookeeper;$/;"	m	struct:config
