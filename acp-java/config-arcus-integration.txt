@@ -1,19 +1,19 @@
-zookeeper=10.33.144.120:2181,10.33.145.182:2181,10.34.33.62:2181
-service_code=long_running
+zookeeper=lr-k8s-arcus-zk-0.lr-k8s-arcus-zk-headless.uhm0311.svccluster.local:2181,lr-k8s-arcus-zk-1.lr-k8s-arcus-zk-headless.uhm0311.svccluster.local:2181,lr-k8s-arcus-zk-2.lr-k8s-arcus-zk-headless.uhm0311.svccluster.local:2181
+service_code=lrc-k8s-with-k8s-zk
 #single_server=10.34.30.237:11700
 
-client=16
-client_exptime=1000
+client=5
+client_exptime=20
 
-rate=300
+rate=1000
 request=0
 time=0
 
-keyset_size=600000
-key_prefix=java-s003:
+keyset_size=200000
+key_prefix=java-jam2in-s003:
 
 client_profile=torture_arcus_integration
 
 pool=1
-pool_size=16
+pool_size=5
 pool_use_random=false
