@@ -527,9 +527,10 @@ public class torture_arcus_integration implements client_profile {
       byte[] bkey_to = bk_to.getBytes();
       SMGetFuture<List<SMGetElement<Object>>> f =
         cli.next_ac.asyncBopSortMergeGet(key_list, bkey, bkey_to,
-                                         filter, 0,
+                                         filter,
                                          random.nextInt(10) + 10
-                                         /* random.randint(10, 20) */);
+                                         /* random.randint(10, 20) */,
+                                         false);
       List<SMGetElement<Object>> val = f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
       if (val == null || val.size() <= 0) {
         System.out.printf("Collection_Btree: BopSortMergeGet failed." +

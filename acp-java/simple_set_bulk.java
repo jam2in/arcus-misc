@@ -22,7 +22,8 @@ import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.spy.memcached.ops.CollectionOperationStatus;
+import net.spy.memcached.ops.OperationStatus;
+import net.spy.memcached.ops.StoreType;
 
 public class simple_set_bulk implements client_profile {
 
@@ -52,12 +53,12 @@ public class simple_set_bulk implements client_profile {
     }
 
     // Set Bulk
-    if (!cli.before_request())	
+    if (!cli.before_request())
       return false;
 
-    Future<Map<String, CollectionOperationStatus>> f =
-      cli.next_ac.asyncSetBulk(key_list, cli.conf.client_exptime, val);
-    Map<String, CollectionOperationStatus> result =
+    Future<Map<String, OperationStatus>> f =
+      cli.next_ac.asyncStoreBulk(StoreType.set, key_list, cli.conf.client_exptime, val);
+    Map<String, OperationStatus> result =
       f.get(cli.conf.client_timeout, TimeUnit.MILLISECONDS);
     if (result == null) {
       System.out.printf("set bulk failed. id=%d key=%s\n", cli.id, key_list.get(0));
